@@ -48,7 +48,7 @@ const HomeView = ({ onStart, onNavigate, onSettings, streak = 0, userName = "", 
             {/* ── SPLASH ─────────────────────────────────────── */}
             {!showDash && (
                 <div style={{ position: "fixed", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", zIndex: 10, padding: "0 40px", textAlign: "center" }}>
-                    <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(52px, 12vw, 80px)", fontWeight: 300, lineHeight: 1.1, marginBottom: "24px", color: "var(--text)" }}>
+                    <h1 style={{ fontFamily: "'DM Sans', -apple-system, sans-serif", fontSize: "clamp(52px, 12vw, 80px)", fontWeight: 300, lineHeight: 1.05, marginBottom: "24px", color: "var(--text)", fontStyle: "italic" }}>
                         <StaggerText text="Form &" delay={200} /><br />
                         <StaggerText text="Strength" style={{ fontStyle: "italic", color: "var(--accent)" }} delay={800} />
                     </h1>

@@ -35,7 +35,8 @@ const styles = {
         overflowX: "hidden",
     },
     heading: {
-        fontFamily: "'Cormorant Garamond', serif",
+        fontFamily: "'DM Sans', -apple-system, sans-serif",
+
         color: "var(--text)",
     },
     card: {
@@ -52,7 +53,8 @@ const styles = {
         border: "none",
         borderRadius: "50px",
         padding: "14px 32px",
-        fontFamily: "'Jost', sans-serif",
+        fontFamily: "'Inter', -apple-system, sans-serif",
+
         fontSize: "13px",
         letterSpacing: "0.15em",
         textTransform: "uppercase",
@@ -69,7 +71,8 @@ const styles = {
         border: "1px solid var(--border)",
         borderRadius: "50px",
         padding: "10px 20px",
-        fontFamily: "'Jost', sans-serif",
+        fontFamily: "'Inter', -apple-system, sans-serif",
+
         fontSize: "12px",
         letterSpacing: "0.1em",
         textTransform: "uppercase",
