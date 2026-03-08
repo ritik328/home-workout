@@ -62,7 +62,7 @@ const YogaView = ({ day, onNavigate, onBack }) => {
                     <button style={{ fontSize: "20px", color: "var(--muted)", background: "none", border: "none", cursor: "pointer" }} onClick={onBack}>←</button>
                     <div style={{ textAlign: "center" }}>
                         <p style={{ fontSize: "9px", letterSpacing: "0.25em", color: "var(--accent)", textTransform: "uppercase", marginBottom: "2px" }}>🧘 YOGA & RECOVERY</p>
-                        <h2 style={{ fontFamily: "'DM Sans', sans-serif", fontStyle: "italic", fontSize: "22px", fontWeight: 300, margin: 0 }}>
+                        <h2 style={{ fontFamily: "'DM Sans', sans-serif", fontStyle: "italic", fontSize: "26px", fontWeight: 300, margin: 0 }}>
                             Sunday Healing
                         </h2>
                     </div>
@@ -84,10 +84,10 @@ const YogaView = ({ day, onNavigate, onBack }) => {
                             display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
                             transition: "width 0.3s ease, height 0.3s ease, box-shadow 0.4s ease",
                         }}>
-                            <span style={{ fontSize: "32px", fontWeight: 200, color: "var(--accent)", lineHeight: 1 }}>
+                            <span style={{ fontSize: "40px", fontWeight: 200, color: "var(--accent)", lineHeight: 1 }}>
                                 {breathSeconds}
                             </span>
-                            <span style={{ fontSize: "9px", letterSpacing: "0.2em", color: "var(--muted)", marginTop: "4px" }}>
+                            <span style={{ fontSize: "11px", letterSpacing: "0.2em", color: "var(--muted)", marginTop: "4px" }}>
                                 {breathLabel}
                             </span>
                         </div>
@@ -96,7 +96,8 @@ const YogaView = ({ day, onNavigate, onBack }) => {
                     <div style={{ display: "flex", justifyContent: "center", gap: "12px", marginBottom: "14px" }}>
                         {BREATH_PHASES.map((p, i) => (
                             <span key={i} style={{
-                                fontSize: "9px", letterSpacing: "0.1em",
+                                fontSize: "11px", letterSpacing: "0.1em",
+
                                 color: breathPhase === i ? "var(--accent)" : "var(--border)",
                                 textTransform: "uppercase", transition: "color 0.3s",
                             }}>
@@ -131,14 +132,14 @@ const YogaView = ({ day, onNavigate, onBack }) => {
                         POSE {poseIdx + 1} OF {poses.length}
                     </p>
                     <div style={{ fontSize: "48px", marginBottom: "8px" }}>{poseEmoji[pose?.name] || "🧘"}</div>
-                    <h3 style={{ ...styles.heading, fontSize: "24px", fontWeight: 300, fontStyle: "italic", color: "var(--text)", margin: "0 0 4px" }}>
+                    <h3 style={{ ...styles.heading, fontSize: "30px", fontWeight: 300, fontStyle: "italic", color: "var(--text)", margin: "0 0 4px" }}>
                         {pose?.name}
                     </h3>
 
-                    <p style={{ fontSize: "11px", letterSpacing: "0.12em", color: "var(--accent)", textTransform: "uppercase", marginBottom: "10px" }}>
+                    <p style={{ fontSize: "13px", letterSpacing: "0.12em", color: "var(--accent)", textTransform: "uppercase", marginBottom: "10px" }}>
                         {pose?.reps} · {pose?.targets}
                     </p>
-                    <p style={{ fontSize: "13px", color: "var(--muted)", fontStyle: "italic", lineHeight: 1.6, marginBottom: "20px" }}>
+                    <p style={{ fontSize: "15px", color: "var(--muted)", fontStyle: "italic", lineHeight: 1.6, marginBottom: "20px" }}>
                         "{pose?.tip}"
                     </p>
 
@@ -195,8 +196,8 @@ const YogaView = ({ day, onNavigate, onBack }) => {
                         >
                             <span style={{ fontSize: "18px", width: "24px", textAlign: "center" }}>{poseEmoji[p.name] || "🧘"}</span>
                             <div style={{ flex: 1 }}>
-                                <p style={{ fontSize: "14px", margin: 0, color: i < poseIdx ? "var(--muted)" : "var(--text)" }}>{p.name}</p>
-                                <p style={{ fontSize: "10px", color: "var(--muted)", margin: "2px 0 0" }}>{p.reps}</p>
+                                <p style={{ fontSize: "16px", margin: 0, color: i < poseIdx ? "var(--muted)" : "var(--text)" }}>{p.name}</p>
+                                <p style={{ fontSize: "12px", color: "var(--muted)", margin: "2px 0 0" }}>{p.reps}</p>
                             </div>
                             <span style={{ fontSize: "12px", color: i < poseIdx ? "var(--green)" : i === poseIdx ? "var(--accent)" : "var(--border)" }}>
                                 {i < poseIdx ? "✓" : i === poseIdx ? "▶" : "○"}
