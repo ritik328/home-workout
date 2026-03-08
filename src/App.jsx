@@ -11,9 +11,8 @@ import SettingsView from "./views/SettingsView";
 import ShareView from "./views/ShareView";
 import {
   setStartDate, getStartDate, getAllLogs, detectMissed, calcStreaks, todayStr,
-  getName, getPhoto, getDarkMode, setDarkMode,
+  getName, getPhoto, getDarkMode, setDarkMode, isToday,
 } from "./utils/storage";
-
 
 // ─── MAIN APP ─────────────────────────────────────────────────────────────────
 export default function App() {
@@ -27,12 +26,11 @@ export default function App() {
   const [workoutStartTime, setWorkoutStartTime] = useState(null);
   const [userName, setUserName] = useState(getName() || "");
   const [userPhoto, setUserPhoto] = useState(getPhoto() || null);
-  const [isDark, setIsDark] = useState(getDarkMode() !== false); // dark by default
+  const [isDark, setIsDark] = useState(getDarkMode() !== false);
 
   // Apply theme to root on every change
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", isDark ? "dark" : "light");
-    document.body.style.background = isDark ? "var(--bg)" : "var(--bg)";
   }, [isDark]);
 
   const toggleTheme = () => {
@@ -44,22 +42,11 @@ export default function App() {
   const week = PROGRAM.weeks[selectedWeek];
   const day = selectedDay !== null ? week?.days[selectedDay] : null;
 
-  // Today's focus — find the first uncompleted workout day
-  const todayFocus = (() => {
-    for (let w = 0; w < PROGRAM.weeks.length; w++) {
-      for (let d = 0; d < PROGRAM.weeks[w].days.length; d++) {
-        if (!logs[`${w}-${d}`] || logs[`${w}-${d}`].status !== "completed") {
-          return PROGRAM.weeks[w].days[d].focus;
-        }
-      }
-    }
-    return "All Complete 🎉";
-  })();
-
-  // ── Init ────────────────────────────────────────────────────────────────
+  // Fix 6: Null guard in detectMissed
   useEffect(() => {
     setStartDate(todayStr());
-    detectMissed(getStartDate(), 12, 7);
+    const sd = getStartDate();
+    if (sd) detectMissed(sd, 12, 7);
     refreshLogs();
   }, []);
 
@@ -75,16 +62,50 @@ export default function App() {
     refreshLogs();
   };
 
+  // Fix 7: Today's workout uses isToday() lookup
+  const todayInfo = (() => {
+    const sd = getStartDate();
+    for (let w = 0; w < PROGRAM.weeks.length; w++) {
+      for (let d = 0; d < PROGRAM.weeks[w].days.length; d++) {
+        if (isToday(sd, w, d)) {
+          return { focus: PROGRAM.weeks[w].days[d].focus, week: w, day: d };
+        }
+      }
+    }
+    // Fallback: first uncompleted
+    for (let w = 0; w < PROGRAM.weeks.length; w++) {
+      for (let d = 0; d < PROGRAM.weeks[w].days.length; d++) {
+        const logKey = `${w}-${d}`;
+        if (!logs[logKey] || logs[logKey].status !== "completed") {
+          return { focus: PROGRAM.weeks[w].days[d].focus, week: w, day: d };
+        }
+      }
+    }
+    return { focus: "All Complete 🎉", week: 0, day: 0 };
+  })();
+
+  // Fix 17: Current week index computed from startDate
+  const currentWeekIdx = (() => {
+    const sd = getStartDate();
+    if (!sd) return 0;
+    const daysPassed = Math.floor((new Date() - new Date(sd)) / (1000 * 60 * 60 * 24));
+    return Math.min(11, Math.floor(daysPassed / 7));
+  })();
+
   // Universal bottom-nav handler
   const handleNavigate = (tab) => {
     if (tab === "home") setView("home");
     if (tab === "program") setView("program");
     if (tab === "progress") setView("progress");
     if (tab === "yoga") {
-      // Jump to the yoga day of the current week
       const yogaIdx = week?.days.findIndex(d => d.type === "yoga");
-      if (yogaIdx >= 0) { setSelectedDay(yogaIdx); setCurrentExerciseIdx(0); setIsResting(false); setWorkoutStartTime(Date.now()); setView("workout"); }
-      else setView("program");
+      if (yogaIdx >= 0) {
+        setSelectedDay(yogaIdx);
+        setCurrentExerciseIdx(0);
+        setIsResting(false);
+        setWorkoutStartTime(Date.now());
+        setView("workout");
+      } else setView("program");
     }
   };
 
@@ -92,13 +113,21 @@ export default function App() {
 
   if (view === "home") return (
     <HomeView
-      onStart={() => setView("program")}
+      onStart={() => {
+        // Fix 7: Start button goes to today's workout directly
+        setSelectedWeek(todayInfo.week);
+        setSelectedDay(todayInfo.day);
+        setCurrentExerciseIdx(0);
+        setIsResting(false);
+        setWorkoutStartTime(Date.now());
+        setView("workout");
+      }}
       onNavigate={handleNavigate}
       onSettings={() => setView("settings")}
       streak={streaks.current}
       userName={userName}
       userPhoto={userPhoto}
-      todayFocus={todayFocus}
+      todayFocus={todayInfo.focus}
       selectedWeek={selectedWeek}
       isDark={isDark}
       toggleTheme={toggleTheme}
@@ -108,6 +137,8 @@ export default function App() {
   if (view === "program") return (
     <ProgramView
       selectedWeek={selectedWeek}
+      currentWeekIdx={currentWeekIdx}
+      logs={logs}
       onSelectWeek={(weekIdx) => { setSelectedWeek(weekIdx); setView("days"); }}
       onBack={() => setView("home")}
       onNavigate={handleNavigate}
@@ -170,6 +201,7 @@ export default function App() {
 
   if (view === "settings") return (
     <SettingsView
+      isDark={isDark}
       onBack={() => setView("home")}
       onSettingsChange={handleSettingsChange}
     />
@@ -180,6 +212,7 @@ export default function App() {
       day={day}
       selectedWeek={selectedWeek}
       selectedDay={selectedDay}
+      isDark={isDark}
       onBack={() => setView("done")}
     />
   );

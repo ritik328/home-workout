@@ -14,6 +14,7 @@
   --red: #7c4a4a;
   --purple: #6b5a8a;
   --btn-text: #0c0b09;
+  --nav-bg: rgba(20, 18, 16, 0.88);
 }
 
 /* ─── LIGHT MODE OVERRIDES ─────────────────────────────────────────────────── */
@@ -30,6 +31,7 @@
   --red: #8c4040;
   --purple: #5a4870;
   --btn-text: #ffffff;
+  --nav-bg: rgba(248, 244, 236, 0.92);
 }
 
 /* ─── SMOOTH THEME TRANSITION ──────────────────────────────────────────────── */
@@ -283,7 +285,8 @@ button {
   display: flex;
   align-items: center;
   gap: 4px;
-  background: rgba(20, 18, 16, 0.85);
+  background: var(--nav-bg);
+
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border);

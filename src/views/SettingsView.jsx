@@ -2,8 +2,9 @@ import { useState } from "react";
 import {
     getSetting, setSetting, getName, setName, getPhoto, setPhoto,
     getDarkMode, setDarkMode, getLang, setLang,
-    getDurationMode, setDurationMode, getStartDate, setStartDate
+    getDurationMode, setDurationMode, getStartDate, forceSetStartDate
 } from "../utils/storage";
+
 import styles from "../components/styles";
 
 // Bilingual labels
@@ -69,14 +70,15 @@ const ToggleSwitch = ({ value, onChange }) => (
     </div>
 );
 
-const SettingsView = ({ onBack, onSettingsChange }) => {
+const SettingsView = ({ onBack, onSettingsChange, isDark }) => {
     const lang = getLang();
     const t = T[lang] || T.en;
 
     const [name, setNameState] = useState(getName());
     const [photo, setPhotoState] = useState(getPhoto());
     const [startDate, setStartDateSt] = useState(getStartDate() || "");
-    const [darkMode, setDarkModeState] = useState(getDarkMode());
+    const [darkMode, setDarkModeState] = useState(isDark ?? getDarkMode()); // Fix 13: use prop
+
     const [language, setLangState] = useState(lang);
     const [durMode, setDurModeState] = useState(getDurationMode());
     const [saved, setSaved] = useState(false);
@@ -94,7 +96,8 @@ const SettingsView = ({ onBack, onSettingsChange }) => {
     const handleSave = () => {
         setName(name);
         if (photo) setPhoto(photo);
-        if (startDate) setStartDate(startDate); // will only update if storage allows
+        if (startDate) forceSetStartDate(startDate); // Fix 4: always updates
+
         setDarkMode(darkMode);
         setLang(language);
         setDurationMode(durMode);

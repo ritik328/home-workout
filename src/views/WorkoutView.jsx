@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import ExerciseSVG from "../components/ExerciseSVG";
 import ProgressRing from "../components/ProgressRing";
 import useTimer from "../hooks/useTimer";
@@ -18,27 +19,80 @@ const WorkoutView = ({
     onExit,
     onDone,
 }) => {
+    const [currentSet, setCurrentSet] = useState(1);
+    const [confirmExit, setConfirmExit] = useState(false);
+    const [showPhaseCard, setShowPhaseCard] = useState(false);
+    const [timerFlash, setTimerFlash] = useState(false);
+
     const exercise = day?.exercises[currentExerciseIdx];
+    const totalSets = parseInt(exercise?.sets) || 1;
     const timerDuration = isResting ? (exercise?.rest || 30) : (exercise?.time || 30);
 
+    // ── Fix 1: Proper set tracking with auto-advance ──────────────────────────
     const { seconds, running, start, pause, reset } = useTimer(timerDuration, () => {
+        // Fix 20: Vibrate on timer end
+        if (navigator.vibrate) navigator.vibrate(isResting ? 100 : 200);
+        // Fix 20: Flash timer color briefly
+        setTimerFlash(true);
+        setTimeout(() => setTimerFlash(false), 300);
+
         if (isResting) {
-            setIsResting(false);
-            reset(day?.exercises[currentExerciseIdx]?.time || 30);
+            if (currentSet < totalSets) {
+                // Start next set
+                setCurrentSet(s => s + 1);
+                setIsResting(false);
+                reset(exercise?.time || 30);
+            } else {
+                // All sets done — auto-advance to next exercise
+                handleNextInternal();
+            }
         } else {
             setIsResting(true);
-            reset(day?.exercises[currentExerciseIdx]?.rest || 30);
+            reset(exercise?.rest || 30);
         }
     });
 
-    const totalDuration = timerDuration;
-    const progress = 1 - seconds / totalDuration;
+    // Reset set counter when exercise changes
+    useEffect(() => {
+        setCurrentSet(1);
+    }, [currentExerciseIdx]);
 
-    const handleNext = () => {
+    // Fix 16: Smooth progress bar using timer fraction
+    const timerFraction = 1 - seconds / timerDuration;
+    const totalProgress = (currentExerciseIdx + timerFraction) / day.exercises.length;
+    const progressBarWidth = `${Math.min(100, totalProgress * 100).toFixed(1)}%`;
+    const progressRingValue = 1 - seconds / timerDuration;
+
+    // Warmup / main split
+    const warmupExs = day.exercises.filter(ex => ex.targets?.startsWith("Warmup:"));
+    const mainExs = day.exercises.filter(ex => !ex.targets?.startsWith("Warmup:"));
+    const warmupCount = warmupExs.length;
+
+    // Fix 11: detect yoga
+    const isYoga = day?.type === "yoga";
+
+    // ── Internal advance (used by timer auto-advance and button) ──────────────
+    const handleNextInternal = (fromButton = false) => {
+        // Fix 19: Phase transition card (warmup → main)
+        const isLastWarmup = currentExerciseIdx === warmupCount - 1 && warmupCount > 0;
+        if (isLastWarmup && fromButton) {
+            setShowPhaseCard(true);
+            pause();
+            setTimeout(() => {
+                setShowPhaseCard(false);
+                setCurrentExerciseIdx(warmupCount);
+                setIsResting(false);
+                setCurrentSet(1);
+                reset(day.exercises[warmupCount]?.time || 30);
+            }, 1500);
+            return;
+        }
+
         if (currentExerciseIdx < day.exercises.length - 1) {
             const next = currentExerciseIdx + 1;
             setCurrentExerciseIdx(next);
             setIsResting(false);
+            setCurrentSet(1);
             reset(day.exercises[next]?.time || 30);
         } else {
             const durationMins = workoutStartTime ? Math.round((Date.now() - workoutStartTime) / 60000) : 0;
@@ -54,11 +108,14 @@ const WorkoutView = ({
         }
     };
 
+    const handleNext = () => handleNextInternal(true);
+
     const handlePrev = () => {
         if (currentExerciseIdx > 0) {
             const prev = currentExerciseIdx - 1;
             setCurrentExerciseIdx(prev);
             setIsResting(false);
+            setCurrentSet(1);
             reset(day.exercises[prev]?.time || 30);
         }
     };
@@ -70,11 +127,11 @@ const WorkoutView = ({
         if (!Array.isArray(mediaUrls)) mediaUrls = [mediaUrls];
 
         const isVideo = (url) => url?.match(/\.(mp4|webm)(\?.*)?$/i);
-        const isImage = (url) => url?.match(/\.(gif|jpg|jpeg|png)(\?.*)?$/i) || url?.includes("cloudinary") || url?.includes("images.ctfassets") || url?.includes("popsugar-assets") || url?.includes("spotebi") || url?.includes("cloudfront");
+        const isImage = (url) => url?.match(/\.(gif|jpg|jpeg|png)(\?.*)?$/i)
+            || url?.includes("popsugar-assets") || url?.includes("spotebi") || url?.includes("cloudfront");
 
         const videoUrl = mediaUrls.find(isVideo);
         const imageUrl = mediaUrls.find(isImage);
-        const articleUrl = mediaUrls.find(u => !isVideo(u) && !isImage(u));
 
         return (
             <>
@@ -85,45 +142,83 @@ const WorkoutView = ({
                 ) : (
                     <ExerciseSVG name={exercise?.name} style={{ width: "180px", height: "180px", opacity: 0.9 }} />
                 )}
-                {articleUrl && !imageUrl && !videoUrl && (
-                    <a href={articleUrl} target="_blank" rel="noreferrer" style={{ fontSize: "11px", color: C.accent, textDecoration: "none", letterSpacing: "0.1em" }}>
-                        View Tutorial ↗
-                    </a>
-                )}
             </>
         );
     };
 
-    // Warmup or main
-    const warmupExs = day.exercises.filter(ex => ex.targets?.startsWith("Warmup:"));
-    const mainExs = day.exercises.filter(ex => !ex.targets?.startsWith("Warmup:"));
-    const warmupCount = warmupExs.length;
+    // Fix 11: Yoga-adaptive colors
+    const ringColor = isYoga ? "var(--purple)" : (timerFlash ? "#fff" : (isResting ? "var(--muted)" : "var(--accent)"));
 
     return (
-        <div className={`player-bg ${isResting ? "resting" : ""}`} style={{ minHeight: "100vh", position: "relative" }}>
-            {/* Gold hairline progress bar */}
+        <div
+            className={`player-bg ${isResting ? "resting" : ""} ${isYoga ? "yoga-bg" : ""}`}
+            style={{ minHeight: "100vh", position: "relative" }}
+        >
+            {/* Fix 16: Smooth continuous progress bar */}
             <div className="workout-progress">
-                <div className="workout-progress-fill" style={{ width: `${(currentExerciseIdx / day.exercises.length) * 100}%` }} />
+                <div className="workout-progress-fill" style={{ width: progressBarWidth, transition: "width 0.5s linear" }} />
             </div>
+
+            {/* Fix 19: Phase transition card */}
+            {showPhaseCard && (
+                <div style={{ position: "fixed", inset: 0, background: "var(--bg)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 50, animation: "fadeIn 0.3s ease" }}>
+                    <div style={{ textAlign: "center" }}>
+                        <p className="label" style={{ marginBottom: "12px", color: "var(--accent)" }}>✅ Warmup Complete</p>
+                        <h2 style={{ ...styles.heading, fontSize: "clamp(36px,8vw,56px)", fontWeight: 300, fontStyle: "italic" }}>
+                            Main Workout
+                        </h2>
+                        <p style={{ color: "var(--muted)", marginTop: "12px", fontSize: "13px" }}>Get ready…</p>
+                    </div>
+                </div>
+            )}
+
+            {/* Fix 5: Back confirm overlay */}
+            {confirmExit && (
+                <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.75)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100 }}>
+                    <div style={{ background: "var(--surface)", borderRadius: "20px", padding: "28px 24px", textAlign: "center", maxWidth: "300px", margin: "0 20px" }}>
+                        <p style={{ fontSize: "20px", marginBottom: "8px" }}>Leave workout?</p>
+                        <p style={{ color: "var(--muted)", fontSize: "13px", marginBottom: "24px", lineHeight: 1.5 }}>Your progress this session will be lost.</p>
+                        <button onClick={onExit} style={{ ...styles.btn, width: "100%", marginBottom: "10px", background: "var(--red)", color: "#fff" }}>Yes, Exit</button>
+                        <button onClick={() => { setConfirmExit(false); start(); }} style={{ ...styles.btnOutline, width: "100%" }}>Keep Going</button>
+                    </div>
+                </div>
+            )}
 
             <div style={{ maxWidth: "480px", margin: "0 auto", padding: "20px 24px 100px", boxSizing: "border-box" }}>
                 {/* Top bar */}
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "28px" }}>
-                    <button style={{ fontSize: "20px", color: C.muted }} onClick={() => { pause(); onExit(); }}>←</button>
+                    {/* Fix 5: Confirm before exit */}
+                    <button style={{ fontSize: "20px", color: "var(--muted)" }} onClick={() => { pause(); setConfirmExit(true); }}>←</button>
                     <div style={{ textAlign: "center" }}>
                         <p className="label" style={{ fontSize: "9px" }}>
-                            {isResting ? "BREATHE" : exercise?.targets}
+                            {isResting ? (isYoga ? "🧘 HOLD & BREATHE" : "BREATHE") : exercise?.targets}
                         </p>
                     </div>
                     <span className="label" style={{ fontSize: "9px" }}>{currentExerciseIdx + 1}/{day.exercises.length}</span>
                 </div>
 
-                {/* Exercise name */}
+                {/* Exercise name + set info */}
                 <div style={{ textAlign: "center", marginBottom: "24px" }}>
-                    <h2 style={{ ...styles.heading, fontSize: "38px", fontWeight: 300, fontStyle: isResting ? "italic" : "normal", color: isResting ? C.muted : C.text, margin: "0 0 4px" }}>
-                        {isResting ? "Rest & Breathe" : exercise?.name}
+                    <h2 style={{ ...styles.heading, fontSize: "clamp(26px,6vw,38px)", fontWeight: 300, fontStyle: isResting ? "italic" : "normal", color: isResting ? "var(--muted)" : "var(--text)", margin: "0 0 4px" }}>
+                        {isResting ? (isYoga ? "Breathe & Hold" : "Rest & Breathe") : exercise?.name}
                     </h2>
-                    <p className="label" style={{ fontSize: "10px" }}>{exercise?.sets} sets · {exercise?.reps}</p>
+
+                    {/* Fix 1: Set label */}
+                    <p className="label" style={{ fontSize: "10px" }}>
+                        {exercise?.sets} sets · {exercise?.reps}
+                        {!isResting && ` · Set ${currentSet} of ${totalSets}`}
+                    </p>
+
+                    {/* Fix 1: Set dots */}
+                    {!isResting && totalSets > 1 && (
+                        <div style={{ display: "flex", gap: "6px", justifyContent: "center", marginTop: "8px" }}>
+                            {Array.from({ length: totalSets }, (_, i) => (
+                                <span key={i} style={{ fontSize: "16px", color: i < currentSet ? "var(--accent)" : "var(--border)" }}>
+                                    {i < currentSet ? "●" : "○"}
+                                </span>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
                 {/* Media */}
@@ -133,21 +228,23 @@ const WorkoutView = ({
                     </div>
                 )}
 
-                {/* Gold ring timer */}
+                {/* Fix 11: yoga/work/rest ring color; Fix 20: flash on complete */}
                 <div style={{ display: "flex", justifyContent: "center", marginBottom: "24px" }}>
-                    <ProgressRing value={progress} size={160} stroke={4} color={isResting ? C.muted : C.accent}>
-                        <span style={{ ...styles.heading, fontSize: "52px", fontWeight: 300, color: isResting ? C.muted : C.accent, lineHeight: 1 }}>
+                    <ProgressRing value={progressRingValue} size={160} stroke={4} color={ringColor}>
+                        <span style={{ ...styles.heading, fontSize: "52px", fontWeight: 300, color: ringColor, lineHeight: 1, transition: "color 0.3s" }}>
                             {seconds}
                         </span>
                         <span className="label" style={{ fontSize: "9px", marginTop: "4px" }}>
-                            {isResting ? "rest" : "seconds"}
+                            {isResting ? (isYoga ? "hold" : "rest") : "seconds"}
                         </span>
                     </ProgressRing>
                 </div>
 
-                {/* Benefits / tip */}
-                <p style={{ textAlign: "center", fontSize: "13px", color: C.muted, fontStyle: "italic", marginBottom: "24px", padding: "0 16px" }}>
-                    {isResting ? "Shake out your muscles. Prepare for the next set." : `"${exercise?.benefits}"`}
+                {/* Tip */}
+                <p style={{ textAlign: "center", fontSize: "13px", color: "var(--muted)", fontStyle: "italic", marginBottom: "24px", padding: "0 16px" }}>
+                    {isResting
+                        ? (isYoga ? "Focus on your breath. Return slowly." : "Shake out your muscles. Prepare for the next set.")
+                        : `"${exercise?.benefits}"`}
                 </p>
 
                 {/* Controls */}
@@ -156,11 +253,11 @@ const WorkoutView = ({
                     <button style={{ ...styles.btn, padding: "16px 40px", fontSize: "14px" }} onClick={running ? pause : start}>
                         {running ? "⏸ Pause" : "▶ Start"}
                     </button>
-                    <button style={{ ...styles.btnOutline, padding: "12px 20px" }} onClick={() => { pause(); reset(exercise?.time || 30); setIsResting(false); }}>↺</button>
+                    <button style={{ ...styles.btnOutline, padding: "12px 20px" }} onClick={() => { pause(); setCurrentSet(1); reset(exercise?.time || 30); setIsResting(false); }}>↺</button>
                 </div>
 
-                <button style={{ ...styles.btn, width: "100%", padding: "14px", background: "transparent", border: `1px solid ${C.accent}`, color: C.accent }} onClick={handleNext}>
-                    {currentExerciseIdx === day.exercises.length - 1 ? "Complete ✓" : "Next →"}
+                <button style={{ ...styles.btn, width: "100%", padding: "14px", background: "transparent", border: "1px solid var(--accent)", color: "var(--accent)" }} onClick={handleNext}>
+                    {currentExerciseIdx === day.exercises.length - 1 ? "Complete Workout ✓" : "Next →"}
                 </button>
 
                 {/* Exercise list */}
@@ -168,14 +265,14 @@ const WorkoutView = ({
                     {warmupExs.length > 0 && (
                         <>
                             <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
-                                <span className="label" style={{ color: C.accent, fontSize: "9px" }}>🔥 WARMUP</span>
-                                <div style={{ flex: 1, height: "1px", background: C.border }} />
+                                <span className="label" style={{ color: "var(--accent)", fontSize: "9px" }}>🔥 WARMUP</span>
+                                <div style={{ flex: 1, height: "1px", background: "var(--border)" }} />
                             </div>
                             {warmupExs.map((ex, i) => (
-                                <div key={i} onClick={() => { setCurrentExerciseIdx(i); setIsResting(false); reset(ex.time || 30); pause(); }}
-                                    style={{ display: "flex", gap: "10px", padding: "8px 12px", borderRadius: "8px", marginBottom: "4px", background: i === currentExerciseIdx ? C.surface2 : "transparent", cursor: "pointer", alignItems: "center" }}>
-                                    <span style={{ fontSize: "12px", width: "18px", color: C.accent }}>{i < currentExerciseIdx ? "✓" : i === currentExerciseIdx ? "▶" : "○"}</span>
-                                    <span style={{ fontSize: "13px", color: i < currentExerciseIdx ? C.muted : C.text }}>{ex.name}</span>
+                                <div key={i} onClick={() => { setCurrentExerciseIdx(i); setIsResting(false); setCurrentSet(1); reset(ex.time || 30); pause(); }}
+                                    style={{ display: "flex", gap: "10px", padding: "8px 12px", borderRadius: "8px", marginBottom: "4px", background: i === currentExerciseIdx ? "var(--surface2)" : "transparent", cursor: "pointer", alignItems: "center" }}>
+                                    <span style={{ fontSize: "12px", width: "18px", color: "var(--accent)" }}>{i < currentExerciseIdx ? "✓" : i === currentExerciseIdx ? "▶" : "○"}</span>
+                                    <span style={{ fontSize: "13px", color: i < currentExerciseIdx ? "var(--muted)" : "var(--text)" }}>{ex.name}</span>
                                     <span className="label" style={{ fontSize: "9px", marginLeft: "auto" }}>{ex.sets}×{ex.reps}</span>
                                 </div>
                             ))}
@@ -184,16 +281,16 @@ const WorkoutView = ({
                     {mainExs.length > 0 && (
                         <>
                             <div style={{ display: "flex", alignItems: "center", gap: "10px", margin: "12px 0 8px" }}>
-                                <span className="label" style={{ fontSize: "9px" }}>💪 MAIN WORKOUT</span>
-                                <div style={{ flex: 1, height: "1px", background: C.border }} />
+                                <span className="label" style={{ fontSize: "9px" }}>{isYoga ? "🧘 YOGA SESSION" : "💪 MAIN WORKOUT"}</span>
+                                <div style={{ flex: 1, height: "1px", background: "var(--border)" }} />
                             </div>
                             {mainExs.map((ex, i) => {
                                 const globalIdx = warmupCount + i;
                                 return (
-                                    <div key={i} onClick={() => { setCurrentExerciseIdx(globalIdx); setIsResting(false); reset(ex.time || 30); pause(); }}
-                                        style={{ display: "flex", gap: "10px", padding: "8px 12px", borderRadius: "8px", marginBottom: "4px", background: globalIdx === currentExerciseIdx ? C.surface2 : "transparent", cursor: "pointer", alignItems: "center" }}>
-                                        <span style={{ fontSize: "12px", width: "18px", color: C.accent }}>{globalIdx < currentExerciseIdx ? "✓" : globalIdx === currentExerciseIdx ? "▶" : "○"}</span>
-                                        <span style={{ fontSize: "13px", color: globalIdx < currentExerciseIdx ? C.muted : C.text }}>{ex.name}</span>
+                                    <div key={i} onClick={() => { setCurrentExerciseIdx(globalIdx); setIsResting(false); setCurrentSet(1); reset(ex.time || 30); pause(); }}
+                                        style={{ display: "flex", gap: "10px", padding: "8px 12px", borderRadius: "8px", marginBottom: "4px", background: globalIdx === currentExerciseIdx ? "var(--surface2)" : "transparent", cursor: "pointer", alignItems: "center" }}>
+                                        <span style={{ fontSize: "12px", width: "18px", color: "var(--accent)" }}>{globalIdx < currentExerciseIdx ? "✓" : globalIdx === currentExerciseIdx ? "▶" : "○"}</span>
+                                        <span style={{ fontSize: "13px", color: globalIdx < currentExerciseIdx ? "var(--muted)" : "var(--text)" }}>{ex.name}</span>
                                         <span className="label" style={{ fontSize: "9px", marginLeft: "auto" }}>{ex.sets}×{ex.reps}</span>
                                     </div>
                                 );

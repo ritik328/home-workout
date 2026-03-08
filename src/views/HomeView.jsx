@@ -24,14 +24,21 @@ const StaggerText = ({ text, style = {}, delay = 0 }) => (
 const DAY_LABELS = ["M", "T", "W", "T", "F", "S", "S"];
 
 const HomeView = ({ onStart, onNavigate, onSettings, streak = 0, userName = "", userPhoto = null, todayFocus = "", selectedWeek = 0, isDark = true, toggleTheme }) => {
-    const [showDash, setShowDash] = useState(false);
+    const hasSeenSplash = localStorage.getItem("wf:seenSplash") === "1";
+    const [showDash, setShowDash] = useState(hasSeenSplash);
     const [logs, setLogs] = useState({});
 
     useEffect(() => {
         setLogs(getAllLogs());
-        const t = setTimeout(() => setShowDash(true), 2400);
-        return () => clearTimeout(t);
+        if (!hasSeenSplash) {
+            const t = setTimeout(() => {
+                localStorage.setItem("wf:seenSplash", "1");
+                setShowDash(true);
+            }, 2400);
+            return () => clearTimeout(t);
+        }
     }, []);
+
 
     const weekDone = ["M", "T", "W", "T", "F", "S", "S"].map((_, d) => logs[`${selectedWeek}-${d}`]?.status === "completed");
     const weekCompletedCount = weekDone.filter(Boolean).length;

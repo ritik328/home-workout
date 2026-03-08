@@ -31,6 +31,12 @@ export function setStartDate(date) {
     }
 }
 
+/** Force-update the program start date (used from Settings) */
+export function forceSetStartDate(date) {
+    localStorage.setItem(START_KEY, date);
+}
+
+
 /** Get the program start date string (e.g. "2026-03-08") */
 export function getStartDate() {
     return localStorage.getItem(START_KEY);
