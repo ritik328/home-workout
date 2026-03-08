@@ -2,6 +2,8 @@ import { useState } from "react";
 import useTimer from "../hooks/useTimer";
 import ProgressRing from "../components/ProgressRing";
 import BottomNav from "../components/BottomNav";
+import styles from "../components/styles";
+
 
 // ─── YOGA / RECOVERY VIEW ────────────────────────────────────────────────────
 const BREATH_PHASES = ["BREATHE IN", "HOLD", "BREATHE OUT", "HOLD"];
@@ -51,8 +53,9 @@ const YogaView = ({ day, onNavigate, onBack }) => {
     };
 
     return (
-        <div style={{ minHeight: "100vh", background: "var(--bg)", color: "var(--text)", fontFamily: "'Inter', -apple-system, sans-serif" }}>
-            <div style={{ maxWidth: "480px", margin: "0 auto", padding: "20px 20px 100px", boxSizing: "border-box" }}>
+        <div style={{ ...styles.app, minHeight: "100vh" }}>
+            <div style={styles.container}>
+
 
                 {/* Header */}
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "32px" }}>
@@ -128,9 +131,10 @@ const YogaView = ({ day, onNavigate, onBack }) => {
                         POSE {poseIdx + 1} OF {poses.length}
                     </p>
                     <div style={{ fontSize: "48px", marginBottom: "8px" }}>{poseEmoji[pose?.name] || "🧘"}</div>
-                    <h3 style={{ fontFamily: "'DM Sans', sans-serif", fontStyle: "italic", fontSize: "24px", fontWeight: 300, margin: "0 0 4px" }}>
+                    <h3 style={{ ...styles.heading, fontSize: "24px", fontWeight: 300, fontStyle: "italic", color: "var(--text)", margin: "0 0 4px" }}>
                         {pose?.name}
                     </h3>
+
                     <p style={{ fontSize: "11px", letterSpacing: "0.12em", color: "var(--accent)", textTransform: "uppercase", marginBottom: "10px" }}>
                         {pose?.reps} · {pose?.targets}
                     </p>
