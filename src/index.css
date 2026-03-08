@@ -1,0 +1,549 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap');
+
+/* ─── CSS VARIABLES — Dark mode (default) ──────────────────────────────────── */
+:root {
+  --bg: #0c0b09;
+  --surface: #141210;
+  --surface2: #1e1b17;
+  --accent: #c8a96e;
+  --accent-glow: #c8a96e22;
+  --text: #f0ebe0;
+  --muted: #7a6e5f;
+  --border: #2a2520;
+  --green: #4a7c59;
+  --red: #7c4a4a;
+  --purple: #6b5a8a;
+  --btn-text: #0c0b09;
+}
+
+/* ─── LIGHT MODE OVERRIDES ─────────────────────────────────────────────────── */
+[data-theme="light"] {
+  --bg: #f7f4ef;
+  --surface: #ffffff;
+  --surface2: #f0ece4;
+  --accent: #9a7040;
+  --accent-glow: #9a704022;
+  --text: #1e1a14;
+  --muted: #8a7a62;
+  --border: #e0d8cc;
+  --green: #3a6648;
+  --red: #8c4040;
+  --purple: #5a4870;
+  --btn-text: #ffffff;
+}
+
+/* ─── SMOOTH THEME TRANSITION ──────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+
+/* ─── GLOBAL RESET ─────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+}
+
+button {
+  all: unset;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+/* ─── TYPOGRAPHY ───────────────────────────────────────────────────────────── */
+.display {
+  font-family: 'Cormorant Garamond', serif;
+}
+
+.label {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ─── ANIMATIONS ───────────────────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes shimmer {
+  from {
+    background-position: -200% center;
+  }
+
+  to {
+    background-position: 200% center;
+  }
+}
+
+@keyframes ringDraw {
+  from {
+    stroke-dashoffset: 314;
+  }
+
+  to {
+    stroke-dashoffset: var(--ring-target, 0);
+  }
+}
+
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes breathIn {
+  from {
+    transform: scale(0.95);
+  }
+
+  to {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes flicker {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* ─── PARTICLE CANVAS ──────────────────────────────────────────────────────── */
+.particle-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── STAGGER LETTER ANIMATION ─────────────────────────────────────────────── */
+.hero-char {
+  display: inline-block;
+  opacity: 0;
+  animation: fadeUp 0.6s ease forwards;
+}
+
+/* ─── CARD / SURFACE ───────────────────────────────────────────────────────── */
+.dark-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.dark-card-elevated {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+/* ─── GOLD PILL BUTTON ─────────────────────────────────────────────────────── */
+.btn-gold {
+  background: var(--accent);
+  color: #0c0b09;
+  border-radius: 50px;
+  padding: 16px 40px;
+  font-family: 'Jost', sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 500;
+  transition: transform 0.2s, opacity 0.2s;
+  animation: pulse 3s ease-in-out infinite;
+}
+
+.btn-gold:hover {
+  transform: scale(1.04);
+}
+
+/* ─── OUTLINE BUTTON ───────────────────────────────────────────────────────── */
+.btn-outline {
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: 50px;
+  padding: 10px 20px;
+  font-family: 'Jost', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.btn-outline:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ─── PROGRESS RING ────────────────────────────────────────────────────────── */
+.progress-ring-circle {
+  stroke-dasharray: 314;
+  stroke-dashoffset: 314;
+  animation: ringDraw 1.4s ease forwards;
+  animation-delay: 0.3s;
+  transform-origin: center;
+  transform: rotate(-90deg);
+}
+
+/* ─── HEATMAP WAVE ─────────────────────────────────────────────────────────── */
+@keyframes heatFill {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+.heat-cell {
+  animation: heatFill 0.4s ease forwards;
+  transform-origin: left center;
+}
+
+/* ─── FLOATING BOTTOM NAV ──────────────────────────────────────────────────── */
+.bottom-nav {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(20, 18, 16, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  padding: 10px 16px;
+  z-index: 1000;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+}
+
+.nav-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 14px;
+  border-radius: 40px;
+  transition: background 0.2s;
+  cursor: pointer;
+  min-width: 56px;
+}
+
+.nav-tab.active {
+  background: var(--surface2);
+}
+
+.nav-tab-icon {
+  font-size: 18px;
+}
+
+.nav-tab-label {
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.nav-tab.active .nav-tab-label {
+  color: var(--accent);
+}
+
+.nav-tab-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin: 0 auto;
+}
+
+/* ─── STAT PILL ────────────────────────────────────────────────────────────── */
+.stat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  padding: 8px 16px;
+  font-size: 13px;
+  color: var(--text);
+  animation: countUp 0.6s ease forwards;
+}
+
+/* ─── WORKOUT PLAYER ───────────────────────────────────────────────────────── */
+.player-bg {
+  background: var(--bg);
+  transition: background 0.8s ease;
+}
+
+.player-bg.resting {
+  background: #080a10;
+}
+
+/* ─── YOGA SECTION ─────────────────────────────────────────────────────────── */
+.yoga-bg {
+  background: #110d14;
+}
+
+/* ─── SCROLLBAR HIDE ───────────────────────────────────────────────────────── */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ─── GOLD SHIMMER TEXT ────────────────────────────────────────────────────── */
+.gold-shimmer {
+  background: linear-gradient(90deg, var(--accent), #f0d090, var(--accent));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3s linear infinite;
+}
+
+/* ─── WORKOUT PROGRESS BAR ─────────────────────────────────────────────────── */
+.workout-progress {
+  height: 2px;
+  background: var(--border);
+  width: 100%;
+  position: relative;
+}
+
+.workout-progress-fill {
+  height: 2px;
+  background: var(--accent);
+  transition: width 0.4s ease;
+}
+
+/* ─── MOBILE CONTAINER ─────────────────────────────────────────────────────── */
+.app-shell {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* ─── VIEWPORT / SAFE AREA (iPhone notch + home bar) ──────────────────────── */
+html {
+  /* Extend into notch area */
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left);
+}
+
+body {
+  /* Push content above home indicator */
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* ─── FLUID TYPOGRAPHY ─────────────────────────────────────────────────────── */
+.apple-heading,
+h1,
+h2 {
+  font-size: clamp(32px, 8vw, 72px);
+  line-height: 1.1;
+}
+
+h3 {
+  font-size: clamp(18px, 4vw, 28px);
+}
+
+p,
+span {
+  font-size: clamp(12px, 3.5vw, 16px);
+}
+
+.label {
+  font-size: clamp(9px, 2vw, 11px);
+}
+
+/* ─── TOUCH TARGETS ─────────────────────────────────────────────────────────── */
+button,
+.nav-tab,
+.heat-cell {
+  /* iOS/Android minimum tap target */
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Undo min-height for tiny decorative elements */
+.heat-cell {
+  min-height: unset;
+}
+
+/* ─── BOTTOM NAV — mobile safe area ────────────────────────────────────────── */
+.bottom-nav {
+  bottom: calc(16px + env(safe-area-inset-bottom));
+}
+
+/* ─── CONTAINER PADDING ────────────────────────────────────────────────────── */
+/* More breathing room on tiny phones */
+@media (max-width: 380px) {
+
+  .app-shell,
+  [style*="padding: 24px"] {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+}
+
+/* ─── HEATMAP — shrink cells on small screens ──────────────────────────────── */
+@media (max-width: 420px) {
+  .heat-cell {
+    width: 18px !important;
+    height: 16px !important;
+    border-radius: 3px !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .heat-cell {
+    width: 14px !important;
+    height: 13px !important;
+    border-radius: 2px !important;
+  }
+}
+
+/* ─── STAT GRID — stack on tiny screens ────────────────────────────────────── */
+@media (max-width: 360px) {
+  [style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ─── WORKOUT PLAYER — tighter on small phones ─────────────────────────────── */
+@media (max-width: 380px) {
+  .player-bg .progress-ring circle {
+    /* Shrink the timer ring slightly */
+    r: 60px;
+  }
+}
+
+/* ─── SPLASH — center properly on all sizes ────────────────────────────────── */
+@media (max-height: 640px) {
+
+  /* Short phones (landscape or compact) */
+  .particle-canvas {
+    display: none;
+  }
+}
+
+/* ─── TABLET & DESKTOP — centered card layout ──────────────────────────────── */
+@media (min-width: 600px) {
+
+  .app-shell,
+  .bottom-nav {
+    /* Keep content in a card on larger displays */
+    max-width: 520px;
+  }
+
+  body {
+    background-image:
+      radial-gradient(ellipse at 20% 50%, #1e1b17 0%, transparent 60%),
+      linear-gradient(180deg, var(--bg) 0%, #0a0907 100%);
+  }
+}
+
+@media (min-width: 900px) {
+
+  /* On desktop: floating card feel */
+  .app-shell {
+    box-shadow: 0 0 80px rgba(0, 0, 0, 0.8);
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+  }
+}
+
+/* ─── INPUT / FORM FIXES (prevent iOS auto-zoom) ──────────────────────────── */
+input,
+select,
+textarea {
+  font-size: 16px !important;
+  /* iOS zooms in when < 16px */
+}
+
+/* ─── IMAGE MEDIA IN WORKOUT ───────────────────────────────────────────────── */
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ─── PREVENT SCROLL BOUNCE (iOS) ──────────────────────────────────────────── */
+html,
+body {
+  overscroll-behavior: none;
+}
