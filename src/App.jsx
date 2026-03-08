@@ -9,6 +9,7 @@ import DoneView from "./views/DoneView";
 import ProgressView from "./views/ProgressView";
 import SettingsView from "./views/SettingsView";
 import ShareView from "./views/ShareView";
+import YogaView from "./views/YogaView";
 import {
   setStartDate, getStartDate, getAllLogs, detectMissed, calcStreaks, todayStr,
   getName, getPhoto, getDarkMode, setDarkMode, isToday,
@@ -98,14 +99,26 @@ export default function App() {
     if (tab === "program") setView("program");
     if (tab === "progress") setView("progress");
     if (tab === "yoga") {
-      const yogaIdx = week?.days.findIndex(d => d.type === "yoga");
+      // Always use the yoga day from the current calendar week, not selectedWeek
+      const yogaWeek = PROGRAM.weeks[currentWeekIdx];
+      const yogaIdx = yogaWeek?.days.findIndex(d => d.type === "yoga");
       if (yogaIdx >= 0) {
+        setSelectedWeek(currentWeekIdx);
         setSelectedDay(yogaIdx);
-        setCurrentExerciseIdx(0);
-        setIsResting(false);
-        setWorkoutStartTime(Date.now());
-        setView("workout");
-      } else setView("program");
+        setView("yoga");
+      } else {
+        // Fallback: search all weeks for a yoga day
+        for (let w = 0; w < PROGRAM.weeks.length; w++) {
+          const idx = PROGRAM.weeks[w].days.findIndex(d => d.type === "yoga");
+          if (idx >= 0) {
+            setSelectedWeek(w);
+            setSelectedDay(idx);
+            setView("yoga");
+            return;
+          }
+        }
+        setView("program");
+      }
     }
   };
 
@@ -214,6 +227,14 @@ export default function App() {
       selectedDay={selectedDay}
       isDark={isDark}
       onBack={() => setView("done")}
+    />
+  );
+
+  if (view === "yoga") return (
+    <YogaView
+      day={day}
+      onNavigate={handleNavigate}
+      onBack={() => setView("home")}
     />
   );
 
