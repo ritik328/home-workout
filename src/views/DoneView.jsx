@@ -69,14 +69,15 @@ const DoneView = ({ day, streak, done = 0, total = 84, onShare, onWeekView, onHo
                 </div>
 
                 <button
-                    style={{ ...styles.btn, width: "100%", padding: "16px", marginBottom: "10px", fontSize: "14px" }}
+                    className="clay-btn"
+                    style={{ width: "100%", padding: "16px", marginBottom: "10px", fontSize: "14px" }}
                     onClick={onShare}
                 >
                     📸 Share on Instagram
                 </button>
                 <div style={{ display: "flex", gap: "10px" }}>
-                    <button style={{ ...styles.btnOutline, flex: 1, padding: "12px" }} onClick={onWeekView}>← Week</button>
-                    <button style={{ ...styles.btnOutline, flex: 1, padding: "12px", borderColor: "var(--accent)", color: "var(--accent)" }} onClick={onHome}>Home</button>
+                    <button className="clay-btn-outline" style={{ flex: 1, padding: "12px" }} onClick={onWeekView}>← Week</button>
+                    <button className="clay-btn-outline" style={{ flex: 1, padding: "12px", borderColor: "var(--accent)", color: "var(--accent)" }} onClick={onHome}>Home</button>
                 </div>
             </div>
         </div>

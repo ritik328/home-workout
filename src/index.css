@@ -1,59 +1,65 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&family=DM+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;1,300;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
 
-/* ─── CSS VARIABLES — Dark mode (default) ──────────────────────────────────── */
+/* ─── CSS VARIABLES — Light mode (Claymorphism default) ──────────── */
 :root {
-  --bg: #0c0b09;
-  --surface: #141210;
-  --surface2: #1e1b17;
-  --accent: #c8a96e;
-  --accent-glow: #c8a96e22;
-  --text: #f0ebe0;
-  --muted: #7a6e5f;
-  --border: #2a2520;
-  --green: #4a7c59;
-  --red: #7c4a4a;
-  --purple: #6b5a8a;
-  --btn-text: #0c0b09;
-  --nav-bg: rgba(20, 18, 16, 0.88);
-}
-
-/* ─── LIGHT MODE OVERRIDES ─────────────────────────────────────────────────── */
-[data-theme="light"] {
-  --bg: #f7f4ef;
-  --surface: #ffffff;
-  --surface2: #f0ece4;
-  --accent: #9a7040;
-  --accent-glow: #9a704022;
-  --text: #1e1a14;
-  --muted: #8a7a62;
-  --border: #e0d8cc;
-  --green: #3a6648;
-  --red: #8c4040;
-  --purple: #5a4870;
+  --bg: #e0e5ec;
+  --surface: #e0e5ec;
+  --surface2: #d1d9e6;
+  --accent: #5e72e4;
+  --accent-glow: rgba(94, 114, 228, 0.2);
+  --text: #4a5568;
+  --muted: #a0aec0;
+  --border: #c3cfde;
+  --green: #2dce89;
+  --red: #f5365c;
+  --purple: #8965e0;
   --btn-text: #ffffff;
-  --nav-bg: rgba(248, 244, 236, 0.92);
+  --nav-bg: rgba(224, 229, 236, 0.88);
+  
+  /* Clay variables */
+  --clay-highlight: rgba(255, 255, 255, 0.8);
+  --clay-shadow: rgba(163, 177, 198, 0.6);
+  --clay-inner-highlight: rgba(255, 255, 255, 0.5);
+  --clay-inner-shadow: rgba(163, 177, 198, 0.3);
+  --clay-radius: 24px;
 }
 
-/* ─── SMOOTH THEME TRANSITION ──────────────────────────────────────────────── */
-*,
-*::before,
-*::after {
-  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+/* ─── DARK MODE OVERRIDES ────────────────────────────────────────── */
+[data-theme="dark"] {
+  --bg: #2d3748;
+  --surface: #2d3748;
+  --surface2: #1a202c;
+  --accent: #7f9cf5;
+  --accent-glow: rgba(127, 156, 245, 0.2);
+  --text: #e2e8f0;
+  --muted: #a0aec0;
+  --border: #4a5568;
+  --green: #48bb78;
+  --red: #f56565;
+  --purple: #9f7aea;
+  --btn-text: #1a202c;
+  --nav-bg: rgba(45, 55, 72, 0.88);
+  
+  /* Clay variables dark */
+  --clay-highlight: rgba(255, 255, 255, 0.05);
+  --clay-shadow: rgba(0, 0, 0, 0.4);
+  --clay-inner-highlight: rgba(255, 255, 255, 0.02);
+  --clay-inner-shadow: rgba(0, 0, 0, 0.2);
 }
 
+/* ─── SMOOTH THEME TRANSITION ────────────────────────────────────── */
+*, *::before, *::after {
+  transition: background-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
+}
 
-/* ─── GLOBAL RESET ─────────────────────────────────────────────────────────── */
-*,
-*::before,
-*::after {
+/* ─── GLOBAL RESET ───────────────────────────────────────────────── */
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-html,
-body,
-#root {
+html, body, #root {
   width: 100%;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
@@ -62,11 +68,10 @@ body,
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-  font-weight: 300;
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-weight: 400;
   letter-spacing: -0.01em;
 }
-
 
 button {
   all: unset;
@@ -74,13 +79,12 @@ button {
   box-sizing: border-box;
 }
 
-/* ─── TYPOGRAPHY ───────────────────────────────────────────────────────────── */
+/* ─── TYPOGRAPHY ─────────────────────────────────────────────────── */
 .display {
   font-family: 'DM Sans', sans-serif;
   font-style: italic;
   font-weight: 300;
 }
-
 
 .label {
   font-size: 11px;
@@ -89,98 +93,33 @@ button {
   color: var(--muted);
 }
 
-/* ─── ANIMATIONS ───────────────────────────────────────────────────────────── */
+/* ─── ANIMATIONS ─────────────────────────────────────────────────── */
 @keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes pulse {
-
-  0%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  50% {
-    opacity: 0.7;
-    transform: scale(1.06);
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes shimmer {
-  from {
-    background-position: -200% center;
-  }
-
-  to {
-    background-position: 200% center;
-  }
+  from { background-position: -200% center; }
+  to { background-position: 200% center; }
 }
 
 @keyframes ringDraw {
-  from {
-    stroke-dashoffset: 314;
-  }
-
-  to {
-    stroke-dashoffset: var(--ring-target, 0);
-  }
+  from { stroke-dashoffset: 314; }
+  to { stroke-dashoffset: var(--ring-target, 0); }
 }
 
 @keyframes countUp {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes breathIn {
-  from {
-    transform: scale(0.95);
-  }
-
-  to {
-    transform: scale(1.05);
-  }
-}
-
-@keyframes flicker {
-
-  0%,
-  100% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0.7;
-  }
-}
-
-/* ─── PARTICLE CANVAS ──────────────────────────────────────────────────────── */
+/* ─── PARTICLE CANVAS ────────────────────────────────────────────── */
 .particle-canvas {
   position: fixed;
   inset: 0;
@@ -188,67 +127,146 @@ button {
   z-index: 0;
 }
 
-/* ─── STAGGER LETTER ANIMATION ─────────────────────────────────────────────── */
 .hero-char {
   display: inline-block;
   opacity: 0;
   animation: fadeUp 0.6s ease forwards;
 }
 
-/* ─── CARD / SURFACE ───────────────────────────────────────────────────────── */
-.dark-card {
+/* ─── CLAYMORPHISM UTILITIES ─────────────────────────────────────── */
+
+.clay-card {
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 20px;
+  border-radius: var(--clay-radius);
+  box-shadow: 
+    8px 8px 16px var(--clay-shadow), 
+    -8px -8px 16px var(--clay-highlight),
+    inset 2px 2px 4px var(--clay-inner-highlight),
+    inset -2px -2px 4px var(--clay-inner-shadow);
+  padding: 24px;
 }
 
-.dark-card-elevated {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 16px;
+/* A pressed inward clay card or well */
+.clay-well {
+  background: var(--surface);
+  border-radius: var(--clay-radius);
+  box-shadow: 
+    inset 6px 6px 12px var(--clay-shadow), 
+    inset -6px -6px 12px var(--clay-highlight);
+  padding: 16px;
 }
 
-/* ─── GOLD PILL BUTTON ─────────────────────────────────────────────────────── */
-.btn-gold {
+.clay-btn {
   background: var(--accent);
   color: var(--btn-text);
   border-radius: 50px;
-  padding: 14px 36px;
-  font-family: 'Inter', -apple-system, sans-serif;
-  font-size: 12px;
-  letter-spacing: 0.06em;
+  box-shadow: 
+    6px 6px 12px var(--clay-shadow), 
+    -6px -6px 12px var(--clay-highlight),
+    inset 2px 2px 4px rgba(255,255,255,0.3),
+    inset -2px -2px 4px rgba(0,0,0,0.1);
+  padding: 14px 32px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   font-weight: 600;
-  transition: transform 0.2s, opacity 0.2s;
-  animation: pulse 3s ease-in-out infinite;
+  transition: all 0.2s ease;
+  text-align: center;
 }
 
-
-.btn-gold:hover {
-  transform: scale(1.04);
+.clay-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    8px 8px 16px var(--clay-shadow), 
+    -8px -8px 16px var(--clay-highlight),
+    inset 2px 2px 4px rgba(255,255,255,0.3),
+    inset -2px -2px 4px rgba(0,0,0,0.1);
 }
 
-/* ─── OUTLINE BUTTON ───────────────────────────────────────────────────────── */
-.btn-outline {
-  border: 1px solid var(--border);
-  color: var(--muted);
+.clay-btn:active {
+  transform: translateY(2px);
+  box-shadow: 
+    inset 4px 4px 8px rgba(0,0,0,0.2),
+    inset -4px -4px 8px rgba(255,255,255,0.2);
+}
+
+.clay-btn-outline {
+  background: var(--surface);
+  color: var(--text);
   border-radius: 50px;
-  padding: 10px 20px;
-  font-family: 'Inter', -apple-system, sans-serif;
+  box-shadow: 
+    4px 4px 8px var(--clay-shadow), 
+    -4px -4px 8px var(--clay-highlight);
+  padding: 10px 24px;
+  font-family: 'Inter', sans-serif;
   font-size: 11px;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  transition: border-color 0.2s, color 0.2s;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
 }
 
+.clay-btn-outline:active {
+  box-shadow: 
+    inset 4px 4px 8px var(--clay-shadow), 
+    inset -4px -4px 8px var(--clay-highlight);
+}
 
-.btn-outline:hover {
-  border-color: var(--accent);
+/* ─── BOTTOM NAV ─────────────────────────────────────────────────── */
+.bottom-nav {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  border-radius: 50px;
+  padding: 10px 16px;
+  z-index: 1000;
+  box-shadow: 
+    8px 8px 16px var(--clay-shadow), 
+    -8px -8px 16px var(--clay-highlight);
+}
+
+.nav-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 8px 16px;
+  border-radius: 40px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  min-width: 60px;
+  color: var(--muted);
+}
+
+.nav-tab.active {
+  box-shadow: 
+    inset 4px 4px 8px var(--clay-shadow), 
+    inset -4px -4px 8px var(--clay-highlight);
   color: var(--accent);
 }
 
-/* ─── PROGRESS RING ────────────────────────────────────────────────────────── */
+.nav-tab-icon {
+  font-size: 20px;
+}
+
+.nav-tab-label {
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: inherit;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+/* ─── OTHER COMPONENTS (For backward compatibility where still used) ─ */
 .progress-ring-circle {
   stroke-dasharray: 314;
   stroke-dashoffset: 314;
@@ -258,147 +276,37 @@ button {
   transform: rotate(-90deg);
 }
 
-/* ─── HEATMAP WAVE ─────────────────────────────────────────────────────────── */
-@keyframes heatFill {
-  from {
-    opacity: 0;
-    transform: scaleX(0);
-  }
-
-  to {
-    opacity: 1;
-    transform: scaleX(1);
-  }
-}
-
-.heat-cell {
-  animation: heatFill 0.4s ease forwards;
-  transform-origin: left center;
-}
-
-/* ─── FLOATING BOTTOM NAV ──────────────────────────────────────────────────── */
-.bottom-nav {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  background: var(--nav-bg);
-
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border);
-  border-radius: 50px;
-  padding: 10px 16px;
-  z-index: 1000;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
-}
-
-.nav-tab {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  padding: 6px 14px;
-  border-radius: 40px;
-  transition: background 0.2s;
-  cursor: pointer;
-  min-width: 56px;
-}
-
-.nav-tab.active {
-  background: var(--surface2);
-}
-
-.nav-tab-icon {
-  font-size: 18px;
-}
-
-.nav-tab-label {
-  font-size: 9px;
-  letter-spacing: 0.1em;
-  color: var(--muted);
-  text-transform: uppercase;
-}
-
-.nav-tab.active .nav-tab-label {
-  color: var(--accent);
-}
-
-.nav-tab-dot {
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--accent);
-  margin: 0 auto;
-}
-
-/* ─── STAT PILL ────────────────────────────────────────────────────────────── */
 .stat-pill {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: var(--surface2);
-  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: inset 3px 3px 6px var(--clay-shadow), inset -3px -3px 6px var(--clay-highlight);
   border-radius: 50px;
   padding: 8px 16px;
   font-size: 13px;
+  font-weight: 500;
   color: var(--text);
-  animation: countUp 0.6s ease forwards;
 }
 
-/* ─── WORKOUT PLAYER ───────────────────────────────────────────────────────── */
-.player-bg {
-  background: var(--bg);
-  transition: background 0.8s ease;
-}
-
-.player-bg.resting {
-  background: #080a10;
-}
-
-/* ─── YOGA SECTION ─────────────────────────────────────────────────────────── */
-.yoga-bg {
-  background: #110d14;
-}
-
-/* ─── SCROLLBAR HIDE ───────────────────────────────────────────────────────── */
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-.hide-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-/* ─── GOLD SHIMMER TEXT ────────────────────────────────────────────────────── */
-.gold-shimmer {
-  background: linear-gradient(90deg, var(--accent), #f0d090, var(--accent));
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shimmer 3s linear infinite;
-}
-
-/* ─── WORKOUT PROGRESS BAR ─────────────────────────────────────────────────── */
 .workout-progress {
-  height: 2px;
-  background: var(--border);
+  height: 6px;
+  background: var(--surface);
+  box-shadow: inset 2px 2px 4px var(--clay-shadow), inset -2px -2px 4px var(--clay-highlight);
+  border-radius: 10px;
   width: 100%;
   position: relative;
+  overflow: hidden;
 }
 
 .workout-progress-fill {
-  height: 2px;
+  height: 100%;
   background: var(--accent);
+  border-radius: 10px;
   transition: width 0.4s ease;
 }
 
-/* ─── MOBILE CONTAINER ─────────────────────────────────────────────────────── */
+/* ─── MOBILE CONTAINER ───────────────────────────────────────────── */
 .app-shell {
   width: 100%;
   max-width: 480px;
@@ -407,21 +315,16 @@ button {
   position: relative;
 }
 
-/* ─── VIEWPORT / SAFE AREA (iPhone notch + home bar) ──────────────────────── */
 html {
-  /* Extend into notch area */
   padding: env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left);
 }
 
 body {
-  /* Push content above home indicator */
   padding-bottom: env(safe-area-inset-bottom);
 }
 
-/* ─── FLUID TYPOGRAPHY ─────────────────────────────────────────────────────── */
-.apple-heading,
-h1,
-h2 {
+/* ─── RESPONSIVENESS ──────────────────────────────────────────────── */
+.apple-heading, h1, h2 {
   font-size: clamp(32px, 8vw, 72px);
   line-height: 1.1;
 }
@@ -430,8 +333,7 @@ h3 {
   font-size: clamp(18px, 4vw, 28px);
 }
 
-p,
-span {
+p, span {
   font-size: clamp(12px, 3.5vw, 16px);
 }
 
@@ -439,122 +341,37 @@ span {
   font-size: clamp(9px, 2vw, 11px);
 }
 
-/* ─── TOUCH TARGETS ─────────────────────────────────────────────────────────── */
-button,
-.nav-tab,
-.heat-cell {
-  /* iOS/Android minimum tap target */
+button, .nav-tab {
   min-height: 44px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
 }
 
-/* Undo min-height for tiny decorative elements */
-.heat-cell {
-  min-height: unset;
-}
-
-/* ─── BOTTOM NAV — mobile safe area ────────────────────────────────────────── */
-.bottom-nav {
-  bottom: calc(16px + env(safe-area-inset-bottom));
-}
-
-/* ─── CONTAINER PADDING ────────────────────────────────────────────────────── */
-/* More breathing room on tiny phones */
-@media (max-width: 380px) {
-
-  .app-shell,
-  [style*="padding: 24px"] {
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-  }
-}
-
-/* ─── HEATMAP — shrink cells on small screens ──────────────────────────────── */
-@media (max-width: 420px) {
-  .heat-cell {
-    width: 18px !important;
-    height: 16px !important;
-    border-radius: 3px !important;
-  }
-}
-
-@media (max-width: 360px) {
-  .heat-cell {
-    width: 14px !important;
-    height: 13px !important;
-    border-radius: 2px !important;
-  }
-}
-
-/* ─── STAT GRID — stack on tiny screens ────────────────────────────────────── */
-@media (max-width: 360px) {
-  [style*="grid-template-columns: 1fr 1fr"] {
-    grid-template-columns: 1fr !important;
-  }
-}
-
-/* ─── WORKOUT PLAYER — tighter on small phones ─────────────────────────────── */
-@media (max-width: 380px) {
-  .player-bg .progress-ring circle {
-    /* Shrink the timer ring slightly */
-    r: 60px;
-  }
-}
-
-/* ─── SPLASH — center properly on all sizes ────────────────────────────────── */
-@media (max-height: 640px) {
-
-  /* Short phones (landscape or compact) */
-  .particle-canvas {
-    display: none;
-  }
-}
-
-/* ─── TABLET & DESKTOP — centered card layout ──────────────────────────────── */
+/* ─── TABLET & DESKTOP ────────────────────────────────────────────── */
 @media (min-width: 600px) {
-
-  .app-shell,
-  .bottom-nav {
-    /* Keep content in a card on larger displays */
+  .app-shell, .bottom-nav {
     max-width: 520px;
   }
-
-  body {
-    background-image:
-      radial-gradient(ellipse at 20% 50%, #1e1b17 0%, transparent 60%),
-      linear-gradient(180deg, var(--bg) 0%, #0a0907 100%);
-  }
 }
 
-@media (min-width: 900px) {
-
-  /* On desktop: floating card feel */
-  .app-shell {
-    box-shadow: 0 0 80px rgba(0, 0, 0, 0.8);
-    border-left: 1px solid var(--border);
-    border-right: 1px solid var(--border);
-  }
-}
-
-/* ─── INPUT / FORM FIXES (prevent iOS auto-zoom) ──────────────────────────── */
-input,
-select,
-textarea {
+/* ─── INPUT FIXES ─────────────────────────────────────────────────── */
+input, select, textarea {
   font-size: 16px !important;
-  /* iOS zooms in when < 16px */
+  background: var(--surface);
+  color: var(--text);
+  border: none;
+  border-radius: 12px;
+  padding: 12px 16px;
+  box-shadow: inset 4px 4px 8px var(--clay-shadow), inset -4px -4px 8px var(--clay-highlight);
+  outline: none;
+}
+input:focus {
+  box-shadow: inset 6px 6px 12px var(--clay-shadow), inset -6px -6px 12px var(--clay-highlight);
 }
 
-/* ─── IMAGE MEDIA IN WORKOUT ───────────────────────────────────────────────── */
-img,
-video {
+img, video {
   max-width: 100%;
   height: auto;
 }
 
-/* ─── PREVENT SCROLL BOUNCE (iOS) ──────────────────────────────────────────── */
-html,
-body {
+html, body {
   overscroll-behavior: none;
 }

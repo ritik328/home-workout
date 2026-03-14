@@ -108,12 +108,8 @@ const YogaView = ({ day, onNavigate, onBack }) => {
 
                     <button
                         onClick={startBreath}
-                        style={{
-                            fontSize: "11px", letterSpacing: "0.12em", color: "var(--text)",
-                            background: "var(--surface2)", border: "1px solid var(--border)",
-                            borderRadius: "50px", padding: "8px 24px", cursor: "pointer",
-                            fontFamily: "'Inter', sans-serif", textTransform: "uppercase",
-                        }}
+                        className="clay-btn"
+                        style={{ width: "100%", maxWidth: "200px" }}
                     >
                         Start Breathing
                     </button>
@@ -127,7 +123,7 @@ const YogaView = ({ day, onNavigate, onBack }) => {
                 </div>
 
                 {/* ── CURRENT POSE CARD ───────────────────────────────────────── */}
-                <div className="dark-card" style={{ marginBottom: "20px", textAlign: "center" }}>
+                <div className="clay-card" style={{ marginBottom: "20px", textAlign: "center" }}>
                     <p style={{ fontSize: "9px", letterSpacing: "0.2em", color: "var(--muted)", textTransform: "uppercase", marginBottom: "8px" }}>
                         POSE {poseIdx + 1} OF {poses.length}
                     </p>
@@ -158,23 +154,18 @@ const YogaView = ({ day, onNavigate, onBack }) => {
                     <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
                         {poseIdx > 0 && (
                             <button onClick={() => { pausePose(); const p = poseIdx - 1; setPoseIdx(p); resetPose(poses[p]?.time || 60); }}
-                                style={{ fontSize: "11px", color: "var(--muted)", background: "none", border: "1px solid var(--border)", borderRadius: "50px", padding: "8px 16px", cursor: "pointer" }}>
+                                className="clay-btn-outline" style={{ padding: "8px 16px" }}>
                                 ← Prev
                             </button>
                         )}
                         <button onClick={() => poseTimer ? pausePose() : startPose()}
-                            style={{
-                                fontSize: "11px", letterSpacing: "0.12em", color: "var(--bg)",
-                                background: "var(--accent)", border: "none",
-                                borderRadius: "50px", padding: "10px 28px", cursor: "pointer",
-                                fontFamily: "'Inter', sans-serif", textTransform: "uppercase", fontWeight: 600,
-                            }}
+                            className="clay-btn" style={{ padding: "10px 28px" }}
                         >
                             {poseTimer ? "⏸ Pause" : "▶ Hold"}
                         </button>
                         {poseIdx < poses.length - 1 && (
                             <button onClick={() => { pausePose(); const n = poseIdx + 1; setPoseIdx(n); resetPose(poses[n]?.time || 60); }}
-                                style={{ fontSize: "11px", color: "var(--muted)", background: "none", border: "1px solid var(--border)", borderRadius: "50px", padding: "8px 16px", cursor: "pointer" }}>
+                                className="clay-btn-outline" style={{ padding: "8px 16px" }}>
                                 Next →
                             </button>
                         )}
@@ -207,7 +198,7 @@ const YogaView = ({ day, onNavigate, onBack }) => {
                 </div>
 
                 {poseIdx === poses.length - 1 && (
-                    <button onClick={onBack} className="btn-gold" style={{ width: "100%", marginTop: "24px", padding: "16px", borderRadius: "12px", animation: "none" }}>
+                    <button onClick={onBack} className="clay-btn" style={{ width: "100%", marginTop: "24px" }}>
                         🌸 Complete Session
                     </button>
                 )}

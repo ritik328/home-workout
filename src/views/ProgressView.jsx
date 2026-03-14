@@ -79,7 +79,7 @@ const ProgressView = ({ logs, streaks, program, onBack, onNavigate }) => {
             <div style={styles.container}>
                 {/* Header */}
                 <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "28px" }}>
-                    <button style={styles.btnOutline} onClick={onBack}>←</button>
+                    <button className="clay-btn-outline" onClick={onBack}>←</button>
                     <div>
                         <p className="label" style={{ fontSize: "9px", marginBottom: "4px" }}>YOUR JOURNEY</p>
                         <h2 style={{ ...styles.heading, fontSize: "28px", fontWeight: 300, fontStyle: "italic", margin: 0 }}>Progress</h2>
@@ -94,7 +94,7 @@ const ProgressView = ({ logs, streaks, program, onBack, onNavigate }) => {
                         { icon: "🔥", val: streaks.current, label: "Current Streak", color: C.accent },
                         { icon: "⭐", val: streaks.best, label: "Best Streak", color: C.muted },
                     ].map(s => (
-                        <div key={s.label} style={{ ...styles.card, textAlign: "center", padding: "16px" }}>
+                        <div key={s.label} className="clay-card" style={{ textAlign: "center", padding: "16px" }}>
                             <div style={{ ...styles.heading, fontSize: "32px", color: s.color, marginBottom: "4px" }}>{s.val}</div>
                             <p className="label" style={{ fontSize: "9px" }}>{s.label}</p>
                         </div>
@@ -149,7 +149,7 @@ const ProgressView = ({ logs, streaks, program, onBack, onNavigate }) => {
                 </div>
 
                 {/* Radar Chart */}
-                <div style={{ ...styles.card, textAlign: "center" }}>
+                <div className="clay-card" style={{ textAlign: "center" }}>
                     <p className="label" style={{ fontSize: "9px", marginBottom: "20px" }}>BODY FOCUS RADAR</p>
                     <div style={{ display: "flex", justifyContent: "center" }}>
                         <RadarChart data={radarData} />

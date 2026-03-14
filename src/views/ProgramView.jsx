@@ -26,7 +26,7 @@ const ProgramView = ({ selectedWeek, currentWeekIdx = 0, logs = {}, onSelectWeek
         <div style={styles.container}>
             {/* Header */}
             <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "28px" }}>
-                <button style={styles.btnOutline} onClick={onBack}>←</button>
+                <button className="clay-btn-outline" onClick={onBack}>←</button>
                 <div>
                     <p className="label" style={{ fontSize: "9px", marginBottom: "4px" }}>12 WEEKS</p>
                     <h2 style={{ ...styles.heading, fontSize: "28px", fontWeight: 300, fontStyle: "italic", margin: 0 }}>
@@ -39,7 +39,7 @@ const ProgramView = ({ selectedWeek, currentWeekIdx = 0, logs = {}, onSelectWeek
             {PHASES.map((phase, phaseIdx) => (
                 <div key={phase.name} style={{ marginBottom: "24px" }}>
                     {/* Phase header */}
-                    <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "12px", padding: "16px", background: "var(--surface)", borderRadius: "12px", borderLeft: `3px solid ${phase.color}` }}>
+                    <div className="clay-card" style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "12px", padding: "16px", borderRadius: "12px" }}>
                         <span style={{ fontSize: "28px" }}>{phase.icon}</span>
                         <div>
                             <p className="label" style={{ fontSize: "9px", color: phase.color, marginBottom: "2px" }}>
@@ -64,15 +64,15 @@ const ProgramView = ({ selectedWeek, currentWeekIdx = 0, logs = {}, onSelectWeek
                                     key={weekIdx}
                                     onClick={() => onSelectWeek(weekIdx)}
                                     style={{
-                                        background: isSelected ? phase.color : "var(--surface2)",
-                                        border: `1px solid ${isNow ? phase.color : isSelected ? phase.color : "var(--border)"}`,
-                                        borderRadius: "10px",
-                                        padding: "12px 0",
+                                        background: isSelected ? phase.color : "var(--surface)",
+                                        border: "none",
+                                        borderRadius: "16px",
+                                        padding: "16px 0",
                                         cursor: "pointer",
                                         textAlign: "center",
                                         transition: "all 0.2s",
                                         position: "relative",
-                                        boxShadow: isNow ? `0 0 0 2px ${phase.color}55` : "none",
+                                        boxShadow: isSelected ? "inset 3px 3px 6px rgba(0,0,0,0.2), inset -3px -3px 6px rgba(255,255,255,0.1)" : "4px 4px 8px var(--clay-shadow), -4px -4px 8px var(--clay-highlight)",
                                     }}
                                 >
                                     {isNow && (

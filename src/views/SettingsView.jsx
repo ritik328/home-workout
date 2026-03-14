@@ -112,13 +112,13 @@ const SettingsView = ({ onBack, onSettingsChange, isDark }) => {
             <div style={styles.container}>
                 {/* Header */}
                 <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "8px" }}>
-                    <button style={{ ...styles.btnOutline, padding: "8px 16px" }} onClick={onBack}>← Back</button>
+                    <button className="clay-btn-outline" style={{ padding: "8px 16px" }} onClick={onBack}>← Back</button>
                     <h2 style={{ ...styles.heading, fontSize: "28px", fontWeight: "300", margin: 0 }}>{cur.title}</h2>
                 </div>
 
                 {/* —— PROFILE —— */}
                 <SectionTitle>{cur.profile}</SectionTitle>
-                <div style={{ ...styles.card, display: "flex", alignItems: "center", gap: "16px" }}>
+                <div className="clay-card" style={{ display: "flex", alignItems: "center", gap: "16px" }}>
                     <div style={{ width: "64px", height: "64px", borderRadius: "50%", overflow: "hidden", background: "#e0d8cc", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "28px" }}>
                         {photo ? <img src={photo} alt="profile" style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : "👤"}
                     </div>
@@ -129,7 +129,7 @@ const SettingsView = ({ onBack, onSettingsChange, isDark }) => {
                             placeholder={cur.namePlaceholder}
                             style={{ width: "100%", border: "none", borderBottom: "1px solid #d4c9b8", background: "transparent", fontSize: "16px", fontFamily: "inherit", color: "#3a3028", outline: "none", paddingBottom: "4px", marginBottom: "10px", boxSizing: "border-box" }}
                         />
-                        <label style={{ ...styles.btnOutline, fontSize: "11px", letterSpacing: "1px", cursor: "pointer", padding: "6px 12px", display: "inline-block" }}>
+                        <label className="clay-btn-outline" style={{ fontSize: "11px", letterSpacing: "1px", cursor: "pointer", padding: "6px 12px", display: "inline-block" }}>
                             {cur.photoBtn}
                             <input type="file" accept="image/*" onChange={handlePhoto} style={{ display: "none" }} />
                         </label>
@@ -138,7 +138,7 @@ const SettingsView = ({ onBack, onSettingsChange, isDark }) => {
 
                 {/* —— PROGRAM —— */}
                 <SectionTitle>{cur.program}</SectionTitle>
-                <div style={styles.card}>
+                <div className="clay-card">
                     <div style={row}>
                         <span style={{ fontSize: "14px" }}>{cur.startDate}</span>
                         <input
@@ -155,7 +155,8 @@ const SettingsView = ({ onBack, onSettingsChange, isDark }) => {
                                 <button
                                     key={v}
                                     onClick={() => setDurModeState(v)}
-                                    style={{ ...styles.btnOutline, padding: "6px 14px", fontSize: "12px", background: durMode === v ? "#3a3028" : "transparent", color: durMode === v ? "#fff" : "#3a3028" }}
+                                    className={durMode === v ? "clay-btn" : "clay-btn-outline"}
+                                    style={{ padding: "6px 14px", fontSize: "12px" }}
                                 >
                                     {v === "1hr" ? cur.dur1 : cur.dur15}
                                 </button>
@@ -166,7 +167,7 @@ const SettingsView = ({ onBack, onSettingsChange, isDark }) => {
 
                 {/* —— PREFERENCES —— */}
                 <SectionTitle>{cur.preferences}</SectionTitle>
-                <div style={styles.card}>
+                <div className="clay-card">
                     <div style={row}>
                         <span style={{ fontSize: "14px" }}>{cur.darkMode}</span>
                         <ToggleSwitch value={darkMode} onChange={setDarkModeState} />
@@ -178,7 +179,8 @@ const SettingsView = ({ onBack, onSettingsChange, isDark }) => {
                                 <button
                                     key={v}
                                     onClick={() => setLangState(v)}
-                                    style={{ ...styles.btnOutline, padding: "6px 14px", fontSize: "12px", background: language === v ? "#3a3028" : "transparent", color: language === v ? "#fff" : "#3a3028" }}
+                                    className={language === v ? "clay-btn" : "clay-btn-outline"}
+                                    style={{ padding: "6px 14px", fontSize: "12px" }}
                                 >
                                     {v === "en" ? "EN" : "हि"}
                                 </button>
@@ -189,7 +191,7 @@ const SettingsView = ({ onBack, onSettingsChange, isDark }) => {
 
                 {/* Save Button */}
                 <div style={{ marginTop: "28px" }}>
-                    <button style={{ ...styles.btn, width: "100%", padding: "16px" }} onClick={handleSave}>
+                    <button className="clay-btn" style={{ width: "100%", padding: "16px" }} onClick={handleSave}>
                         {saved ? cur.saved : cur.save}
                     </button>
                 </div>

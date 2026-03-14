@@ -18,8 +18,8 @@ export const C = {
 
 const styles = {
     app: {
-        fontFamily: "'Jost', sans-serif",
-        fontWeight: 300,
+        fontFamily: "'Inter', -apple-system, sans-serif",
+        fontWeight: 400,
         background: "var(--bg)",
         color: "var(--text)",
         minHeight: "100vh",
@@ -36,16 +36,18 @@ const styles = {
     },
     heading: {
         fontFamily: "'DM Sans', -apple-system, sans-serif",
-
         color: "var(--text)",
     },
+    // Using a class mapping to inline styles if needed, but it's better to use className="clay-card".
+    // I'll define these for fallback, but components should prefer className.
     card: {
         background: "var(--surface)",
-        border: "1px solid var(--border)",
-        borderRadius: "16px",
-        padding: "20px",
-        marginBottom: "12px",
+        borderRadius: "var(--clay-radius, 24px)",
+        boxShadow: "8px 8px 16px var(--clay-shadow), -8px -8px 16px var(--clay-highlight), inset 2px 2px 4px var(--clay-inner-highlight), inset -2px -2px 4px var(--clay-inner-shadow)",
+        padding: "24px",
+        marginBottom: "16px",
         boxSizing: "border-box",
+        border: "none",
     },
     btn: {
         background: "var(--accent)",
@@ -54,25 +56,24 @@ const styles = {
         borderRadius: "50px",
         padding: "14px 32px",
         fontFamily: "'Inter', -apple-system, sans-serif",
-
         fontSize: "13px",
         letterSpacing: "0.15em",
         textTransform: "uppercase",
-        fontWeight: "500",
+        fontWeight: "600",
         cursor: "pointer",
         display: "inline-flex",
         alignItems: "center",
         justifyContent: "center",
         gap: "8px",
+        boxShadow: "6px 6px 12px var(--clay-shadow), -6px -6px 12px var(--clay-highlight), inset 2px 2px 4px rgba(255,255,255,0.3), inset -2px -2px 4px rgba(0,0,0,0.1)",
     },
     btnOutline: {
-        background: "transparent",
-        color: "var(--muted)",
-        border: "1px solid var(--border)",
+        background: "var(--surface)",
+        color: "var(--text)",
+        border: "1px solid transparent",
         borderRadius: "50px",
         padding: "10px 20px",
         fontFamily: "'Inter', -apple-system, sans-serif",
-
         fontSize: "12px",
         letterSpacing: "0.1em",
         textTransform: "uppercase",
@@ -81,6 +82,8 @@ const styles = {
         alignItems: "center",
         justifyContent: "center",
         gap: "6px",
+        boxShadow: "4px 4px 8px var(--clay-shadow), -4px -4px 8px var(--clay-highlight)",
+        fontWeight: "500",
     },
     timerCircle: {
         width: "160px",
@@ -91,15 +94,19 @@ const styles = {
         flexDirection: "column",
         margin: "0 auto",
         position: "relative",
+        borderRadius: "50%",
+        background: "var(--surface)",
+        boxShadow: "inset 8px 8px 16px var(--clay-shadow), inset -8px -8px 16px var(--clay-highlight)",
     },
     tag: {
-        background: "var(--accent-glow)",
+        background: "var(--surface)",
         color: "var(--accent)",
         borderRadius: "50px",
         padding: "4px 12px",
         fontSize: "11px",
         letterSpacing: "0.1em",
         display: "inline-block",
+        boxShadow: "inset 2px 2px 5px var(--clay-shadow), inset -2px -2px 5px var(--clay-highlight)",
     },
     label: {
         fontSize: "11px",

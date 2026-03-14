@@ -62,7 +62,7 @@ const HomeView = ({ onStart, onNavigate, onSettings, streak = 0, userName = "", 
                     <p className="label" style={{ marginBottom: "48px", animation: "fadeIn 0.8s ease 1.8s forwards", opacity: 0 }}>
                         Your 12-week Journey · At Home · No Equipment
                     </p>
-                    <button className="btn-gold" onClick={() => { setShowDash(true); onStart(); }} style={{ animation: "fadeIn 0.8s ease 2s forwards", opacity: 0 }}>
+                    <button className="clay-btn" onClick={() => { setShowDash(true); onStart(); }} style={{ animation: "fadeIn 0.8s ease 2s forwards", opacity: 0 }}>
                         Begin →
                     </button>
                     <div className="hide-scrollbar" style={{ position: "fixed", bottom: "60px", left: 0, right: 0, display: "flex", gap: "32px", overflowX: "auto", padding: "0 40px", animation: "fadeIn 1s ease 2.2s forwards", opacity: 0 }}>
@@ -94,8 +94,8 @@ const HomeView = ({ onStart, onNavigate, onSettings, streak = 0, userName = "", 
                                 ⚙️
                             </button>
                             {userPhoto
-                                ? <img src={userPhoto} alt="profile" style={{ width: "44px", height: "44px", borderRadius: "50%", objectFit: "cover", border: "2px solid var(--accent)" }} />
-                                : <div style={{ width: "44px", height: "44px", borderRadius: "50%", background: "var(--surface2)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px", border: "1px solid var(--border)" }}>👤</div>
+                                ? <img src={userPhoto} alt="profile" style={{ width: "44px", height: "44px", borderRadius: "50%", objectFit: "cover", border: "2px solid var(--accent)", boxShadow: "2px 2px 5px var(--clay-shadow)" }} />
+                                : <div style={{ width: "44px", height: "44px", borderRadius: "50%", background: "var(--surface2)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px", boxShadow: "inset 2px 2px 5px var(--clay-shadow), inset -2px -2px 5px var(--clay-highlight)" }}>👤</div>
                             }
                         </div>
                     </div>
@@ -146,18 +146,16 @@ const HomeView = ({ onStart, onNavigate, onSettings, streak = 0, userName = "", 
                     </div>
 
                     {/* Today's workout card */}
-                    <div style={{
-                        background: C.surface, border: `1px solid ${C.border}`,
-                        borderLeft: `3px solid ${C.accent}`,
-                        borderRadius: "16px", padding: "20px 20px 20px 24px",
-                        marginBottom: "16px", cursor: "pointer",
+                    <div className="clay-card" style={{
+                        padding: "20px 20px 20px 24px",
+                        cursor: "pointer",
                         animation: "fadeUp 0.6s ease 0.2s both"
                     }} onClick={onStart}>
                         <p className="label" style={{ marginBottom: "8px" }}>Today's Workout</p>
                         <h3 style={{ ...styles.heading, fontSize: "22px", fontWeight: 300, margin: "0 0 12px" }}>
                             {todayFocus || "Begin Your Journey"}
                         </h3>
-                        <button className="btn-gold" style={{ padding: "10px 24px", fontSize: "12px" }}>
+                        <button className="clay-btn" style={{ padding: "10px 24px", fontSize: "12px" }}>
                             Start →
                         </button>
                     </div>

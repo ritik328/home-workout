@@ -23,7 +23,7 @@ const DaysView = ({ week, selectedWeek, logs, onSelectDay, onBack, onNavigate })
             <div style={styles.container}>
                 {/* Header */}
                 <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "28px" }}>
-                    <button style={styles.btnOutline} onClick={onBack}>←</button>
+                    <button className="clay-btn-outline" onClick={onBack}>←</button>
                     <div>
                         <p className="label" style={{ fontSize: "9px", marginBottom: "4px" }}>
                             WEEK {week.week} · {week.phase}
@@ -47,13 +47,13 @@ const DaysView = ({ week, selectedWeek, logs, onSelectDay, onBack, onNavigate })
                                     onClick={() => onSelectDay(i)}
                                     style={{
                                         width: "36px", height: "36px", borderRadius: "50%",
-                                        background: completed ? "var(--accent)" : missed ? "rgba(124,74,74,0.27)" : "var(--surface2)",
-                                        border: `2px solid ${isTodayDay ? "var(--accent)" : completed ? "var(--accent)" : missed ? "var(--red)" : "var(--border)"}`,
+                                        background: completed ? "var(--accent)" : missed ? "var(--surface)" : "var(--surface)",
+                                        border: isTodayDay ? "2px solid var(--accent)" : "none",
                                         display: "flex", alignItems: "center", justifyContent: "center",
                                         fontSize: "11px", cursor: "pointer",
-                                        color: completed ? "var(--bg)" : missed ? "var(--red)" : "var(--muted)",
+                                        color: completed ? "var(--bg)" : missed ? "var(--red)" : "var(--text)",
                                         fontWeight: completed ? 600 : 400,
-                                        boxShadow: isTodayDay ? "0 0 0 3px rgba(200,169,110,0.35)" : "none",
+                                        boxShadow: completed ? "inset 3px 3px 6px rgba(0,0,0,0.2), inset -3px -3px 6px rgba(255,255,255,0.1)" : "3px 3px 6px var(--clay-shadow), -3px -3px 6px var(--clay-highlight)",
                                         animation: isTodayDay ? "pulse 2s ease-in-out infinite" : "none",
                                         transition: "transform 0.2s",
                                     }}
@@ -74,11 +74,11 @@ const DaysView = ({ week, selectedWeek, logs, onSelectDay, onBack, onNavigate })
                     return (
                         <div
                             key={i}
+                            className="clay-card"
                             style={{
-                                ...styles.card,
                                 cursor: "pointer",
-                                borderLeft: isCompleted ? `3px solid ${C.green}` : isMissed ? `3px solid ${C.red}` : `3px solid ${C.border}`,
-                                transition: "transform 0.2s, border-color 0.2s",
+                                transition: "transform 0.2s, background 0.2s",
+                                borderLeft: isCompleted ? `4px solid ${C.green}` : isMissed ? `4px solid ${C.red}` : "4px solid transparent",
                             }}
                             onClick={() => onSelectDay(i)}
                             onMouseEnter={e => e.currentTarget.style.transform = "translateX(4px)"}
