@@ -62,7 +62,7 @@ const HomeView = ({ onStart, onNavigate, onSettings, streak = 0, userName = "", 
                     <p className="label" style={{ marginBottom: "48px", animation: "fadeIn 0.8s ease 1.8s forwards", opacity: 0 }}>
                         Your 12-week Journey · At Home · No Equipment
                     </p>
-                    <button className="clay-btn" onClick={() => { setShowDash(true); onStart(); }} style={{ animation: "fadeIn 0.8s ease 2s forwards", opacity: 0 }}>
+                    <button className="glass-btn" onClick={() => { setShowDash(true); onStart(); }} style={{ animation: "fadeIn 0.8s ease 2s forwards", opacity: 0 }}>
                         Begin →
                     </button>
                     <div className="hide-scrollbar" style={{ position: "fixed", bottom: "60px", left: 0, right: 0, display: "flex", gap: "32px", overflowX: "auto", padding: "0 40px", animation: "fadeIn 1s ease 2.2s forwards", opacity: 0 }}>
@@ -94,8 +94,8 @@ const HomeView = ({ onStart, onNavigate, onSettings, streak = 0, userName = "", 
                                 ⚙️
                             </button>
                             {userPhoto
-                                ? <img src={userPhoto} alt="profile" style={{ width: "44px", height: "44px", borderRadius: "50%", objectFit: "cover", border: "2px solid var(--accent)", boxShadow: "2px 2px 5px var(--clay-shadow)" }} />
-                                : <div style={{ width: "44px", height: "44px", borderRadius: "50%", background: "var(--surface2)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px", boxShadow: "inset 2px 2px 5px var(--clay-shadow), inset -2px -2px 5px var(--clay-highlight)" }}>👤</div>
+                                ? <img src={userPhoto} alt="profile" style={{ width: "44px", height: "44px", borderRadius: "50%", objectFit: "cover", border: "2px solid var(--accent)", boxShadow: "0 2px 4px var(--glass-shadow)" }} />
+                                : <div style={{ width: "44px", height: "44px", borderRadius: "50%", background: "var(--surface)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px", border: "1px solid var(--glass-border)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)" }}>👤</div>
                             }
                         </div>
                     </div>
@@ -146,7 +146,7 @@ const HomeView = ({ onStart, onNavigate, onSettings, streak = 0, userName = "", 
                     </div>
 
                     {/* Today's workout card */}
-                    <div className="clay-card" style={{
+                    <div className="glass-card" style={{
                         padding: "20px 20px 20px 24px",
                         cursor: "pointer",
                         animation: "fadeUp 0.6s ease 0.2s both"
@@ -155,7 +155,7 @@ const HomeView = ({ onStart, onNavigate, onSettings, streak = 0, userName = "", 
                         <h3 style={{ ...styles.heading, fontSize: "22px", fontWeight: 300, margin: "0 0 12px" }}>
                             {todayFocus || "Begin Your Journey"}
                         </h3>
-                        <button className="clay-btn" style={{ padding: "10px 24px", fontSize: "12px" }}>
+                        <button className="glass-btn" style={{ padding: "10px 24px", fontSize: "12px" }}>
                             Start →
                         </button>
                     </div>

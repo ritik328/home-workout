@@ -156,12 +156,12 @@ const ShareView = ({ day, selectedWeek, selectedDay, onBack }) => {
             <div style={styles.container}>
                 {/* Header */}
                 <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "20px" }}>
-                    <button className="clay-btn-outline" style={{ padding: "8px 16px" }} onClick={onBack}>← Back</button>
+                    <button className="glass-btn-outline" style={{ padding: "8px 16px" }} onClick={onBack}>← Back</button>
                     <h2 style={{ ...styles.heading, fontSize: "26px", fontWeight: "300", margin: 0 }}>Share</h2>
                 </div>
 
                 {/* Canvas preview (scaled down) */}
-                <div className="clay-card" style={{ padding: "16px", marginBottom: "20px", overflow: "hidden" }}>
+                <div className="glass-card" style={{ padding: "16px", marginBottom: "20px", overflow: "hidden" }}>
                     <canvas
                         ref={canvasRef}
                         style={{ width: "100%", height: "auto", borderRadius: "12px", display: "block" }}
@@ -174,11 +174,11 @@ const ShareView = ({ day, selectedWeek, selectedDay, onBack }) => {
 
                 {/* Action Buttons */}
                 <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                    <button className="clay-btn" style={{ width: "100%", padding: "16px" }} onClick={handleDownload}>
+                    <button className="glass-btn" style={{ width: "100%", padding: "16px" }} onClick={handleDownload}>
                         📥 Download Image (Instagram)
                     </button>
                     <button
-                        className="clay-btn"
+                        className="glass-btn"
                         style={{ width: "100%", padding: "16px", background: "#25D366" }}
                         onClick={handleWhatsApp}
                     >

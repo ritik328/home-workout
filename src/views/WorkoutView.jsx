@@ -175,11 +175,11 @@ const WorkoutView = ({
             {/* Fix 5: Back confirm overlay */}
             {confirmExit && (
                 <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.75)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100 }}>
-                    <div className="clay-card" style={{ padding: "28px 24px", textAlign: "center", maxWidth: "300px", margin: "0 20px" }}>
+                    <div className="glass-card" style={{ padding: "28px 24px", textAlign: "center", maxWidth: "300px", margin: "0 20px" }}>
                         <p style={{ fontSize: "20px", marginBottom: "8px" }}>Leave workout?</p>
                         <p style={{ color: "var(--muted)", fontSize: "13px", marginBottom: "24px", lineHeight: 1.5 }}>Your progress this session will be lost.</p>
-                        <button onClick={onExit} className="clay-btn" style={{ width: "100%", marginBottom: "10px", background: "var(--red)", color: "#fff" }}>Yes, Exit</button>
-                        <button onClick={() => { setConfirmExit(false); start(); }} className="clay-btn-outline" style={{ width: "100%" }}>Keep Going</button>
+                        <button onClick={onExit} className="glass-btn" style={{ width: "100%", marginBottom: "10px", background: "var(--red)", color: "#fff" }}>Yes, Exit</button>
+                        <button onClick={() => { setConfirmExit(false); start(); }} className="glass-btn-outline" style={{ width: "100%" }}>Keep Going</button>
                     </div>
                 </div>
             )}
@@ -249,14 +249,14 @@ const WorkoutView = ({
 
                 {/* Controls */}
                 <div style={{ display: "flex", gap: "12px", alignItems: "center", justifyContent: "center", marginBottom: "16px" }}>
-                    <button className="clay-btn-outline" style={{ padding: "12px 20px" }} onClick={handlePrev} disabled={currentExerciseIdx === 0}>←</button>
-                    <button className="clay-btn" style={{ padding: "16px 40px", fontSize: "14px" }} onClick={running ? pause : start}>
+                    <button className="glass-btn-outline" style={{ padding: "12px 20px" }} onClick={handlePrev} disabled={currentExerciseIdx === 0}>←</button>
+                    <button className="glass-btn" style={{ padding: "16px 40px", fontSize: "14px" }} onClick={running ? pause : start}>
                         {running ? "⏸ Pause" : "▶ Start"}
                     </button>
-                    <button className="clay-btn-outline" style={{ padding: "12px 20px" }} onClick={() => { pause(); setCurrentSet(1); reset(exercise?.time || 30); setIsResting(false); }}>↺</button>
+                    <button className="glass-btn-outline" style={{ padding: "12px 20px" }} onClick={() => { pause(); setCurrentSet(1); reset(exercise?.time || 30); setIsResting(false); }}>↺</button>
                 </div>
 
-                <button className="clay-btn" style={{ width: "100%", padding: "14px" }} onClick={handleNext}>
+                <button className="glass-btn" style={{ width: "100%", padding: "14px", marginTop: "16px" }} onClick={handleNext}>
                     {currentExerciseIdx === day.exercises.length - 1 ? "Complete Workout ✓" : "Next →"}
                 </button>
 

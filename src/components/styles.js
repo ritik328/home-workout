@@ -42,12 +42,14 @@ const styles = {
     // I'll define these for fallback, but components should prefer className.
     card: {
         background: "var(--surface)",
-        borderRadius: "var(--clay-radius, 24px)",
-        boxShadow: "8px 8px 16px var(--clay-shadow), -8px -8px 16px var(--clay-highlight), inset 2px 2px 4px var(--clay-inner-highlight), inset -2px -2px 4px var(--clay-inner-shadow)",
+        backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
+        borderRadius: "var(--glass-radius, 24px)",
+        boxShadow: "0 4px 12px var(--glass-shadow)",
+        border: "1px solid var(--glass-border)",
         padding: "24px",
         marginBottom: "16px",
         boxSizing: "border-box",
-        border: "none",
     },
     btn: {
         background: "var(--accent)",
@@ -65,7 +67,7 @@ const styles = {
         alignItems: "center",
         justifyContent: "center",
         gap: "8px",
-        boxShadow: "6px 6px 12px var(--clay-shadow), -6px -6px 12px var(--clay-highlight), inset 2px 2px 4px rgba(255,255,255,0.3), inset -2px -2px 4px rgba(0,0,0,0.1)",
+        boxShadow: "0 4px 12px rgba(0, 122, 255, 0.3)",
     },
     btnOutline: {
         background: "var(--surface)",
@@ -82,7 +84,10 @@ const styles = {
         alignItems: "center",
         justifyContent: "center",
         gap: "6px",
-        boxShadow: "4px 4px 8px var(--clay-shadow), -4px -4px 8px var(--clay-highlight)",
+        backdropFilter: "blur(10px)",
+        WebkitBackdropFilter: "blur(10px)",
+        boxShadow: "0 2px 8px var(--glass-shadow)",
+        border: "1px solid var(--glass-border)",
         fontWeight: "500",
     },
     timerCircle: {
@@ -96,7 +101,10 @@ const styles = {
         position: "relative",
         borderRadius: "50%",
         background: "var(--surface)",
-        boxShadow: "inset 8px 8px 16px var(--clay-shadow), inset -8px -8px 16px var(--clay-highlight)",
+        backdropFilter: "blur(8px)",
+        WebkitBackdropFilter: "blur(8px)",
+        border: "1px solid var(--glass-border)",
+        boxShadow: "inset 0 2px 4px var(--glass-shadow)",
     },
     tag: {
         background: "var(--surface)",
@@ -106,7 +114,9 @@ const styles = {
         fontSize: "11px",
         letterSpacing: "0.1em",
         display: "inline-block",
-        boxShadow: "inset 2px 2px 5px var(--clay-shadow), inset -2px -2px 5px var(--clay-highlight)",
+        border: "1px solid var(--glass-border)",
+        backdropFilter: "blur(4px)",
+        WebkitBackdropFilter: "blur(4px)",
     },
     label: {
         fontSize: "11px",

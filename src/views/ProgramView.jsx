@@ -26,7 +26,7 @@ const ProgramView = ({ selectedWeek, currentWeekIdx = 0, logs = {}, onSelectWeek
         <div style={styles.container}>
             {/* Header */}
             <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "28px" }}>
-                <button className="clay-btn-outline" onClick={onBack}>←</button>
+                <button className="glass-btn-outline" onClick={onBack}>←</button>
                 <div>
                     <p className="label" style={{ fontSize: "9px", marginBottom: "4px" }}>12 WEEKS</p>
                     <h2 style={{ ...styles.heading, fontSize: "28px", fontWeight: 300, fontStyle: "italic", margin: 0 }}>
@@ -39,7 +39,7 @@ const ProgramView = ({ selectedWeek, currentWeekIdx = 0, logs = {}, onSelectWeek
             {PHASES.map((phase, phaseIdx) => (
                 <div key={phase.name} style={{ marginBottom: "24px" }}>
                     {/* Phase header */}
-                    <div className="clay-card" style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "12px", padding: "16px", borderRadius: "12px" }}>
+                    <div className="glass-card" style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "12px", padding: "16px", borderRadius: "12px" }}>
                         <span style={{ fontSize: "28px" }}>{phase.icon}</span>
                         <div>
                             <p className="label" style={{ fontSize: "9px", color: phase.color, marginBottom: "2px" }}>
@@ -71,8 +71,10 @@ const ProgramView = ({ selectedWeek, currentWeekIdx = 0, logs = {}, onSelectWeek
                                         cursor: "pointer",
                                         textAlign: "center",
                                         transition: "all 0.2s",
-                                        position: "relative",
-                                        boxShadow: isSelected ? "inset 3px 3px 6px rgba(0,0,0,0.2), inset -3px -3px 6px rgba(255,255,255,0.1)" : "4px 4px 8px var(--clay-shadow), -4px -4px 8px var(--clay-highlight)",
+                                        boxShadow: isSelected ? "inset 0 2px 4px var(--glass-shadow)" : "0 4px 12px var(--glass-shadow)",
+                                        border: isSelected ? "none" : "1px solid var(--glass-border)",
+                                        backdropFilter: isSelected ? "none" : "blur(16px)",
+                                        WebkitBackdropFilter: isSelected ? "none" : "blur(16px)"
                                     }}
                                 >
                                     {isNow && (

@@ -23,7 +23,7 @@ const DaysView = ({ week, selectedWeek, logs, onSelectDay, onBack, onNavigate })
             <div style={styles.container}>
                 {/* Header */}
                 <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "28px" }}>
-                    <button className="clay-btn-outline" onClick={onBack}>←</button>
+                    <button className="glass-btn-outline" onClick={onBack}>←</button>
                     <div>
                         <p className="label" style={{ fontSize: "9px", marginBottom: "4px" }}>
                             WEEK {week.week} · {week.phase}
@@ -53,7 +53,7 @@ const DaysView = ({ week, selectedWeek, logs, onSelectDay, onBack, onNavigate })
                                         fontSize: "11px", cursor: "pointer",
                                         color: completed ? "var(--bg)" : missed ? "var(--red)" : "var(--text)",
                                         fontWeight: completed ? 600 : 400,
-                                        boxShadow: completed ? "inset 3px 3px 6px rgba(0,0,0,0.2), inset -3px -3px 6px rgba(255,255,255,0.1)" : "3px 3px 6px var(--clay-shadow), -3px -3px 6px var(--clay-highlight)",
+                                        boxShadow: completed ? "inset 0 2px 4px var(--glass-shadow)" : "0 4px 12px var(--glass-shadow)",
                                         animation: isTodayDay ? "pulse 2s ease-in-out infinite" : "none",
                                         transition: "transform 0.2s",
                                     }}
@@ -74,7 +74,7 @@ const DaysView = ({ week, selectedWeek, logs, onSelectDay, onBack, onNavigate })
                     return (
                         <div
                             key={i}
-                            className="clay-card"
+                            className="glass-card"
                             style={{
                                 cursor: "pointer",
                                 transition: "transform 0.2s, background 0.2s",
